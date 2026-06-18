@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minivers — Mock Boutique</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--rose:#FF6B9D;--turquoise:#4ECDC4;--jaune:#FFE66D;--violet:#A855F7;--bleu:#60A5FA;--orange:#FB923C;--bg:#FFF8F0;--text:#2D3436;--fh:'Baloo 2',cursive;--fb:'Nunito',sans-serif;--r:20px}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--fb);color:var(--text);background:var(--bg);overflow-x:hidden}
+h1,h2,h3,h4{font-family:var(--fh)}
+button{cursor:pointer;font-family:var(--fb)}
+nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,.93);backdrop-filter:blur(10px);padding:10px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--jaune)}
+.logo{font-family:var(--fh);font-size:1.5rem;font-weight:800;text-decoration:none;color:var(--text)}.logo span{color:var(--rose)}
+nav ul{list-style:none;display:flex;gap:20px}
+nav a{text-decoration:none;color:var(--text);font-weight:600;font-size:.9rem;transition:color .3s}
+nav a:hover{color:var(--rose)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.btn-cart{position:relative;background:none;border:2px solid var(--turquoise);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;transition:all .3s;color:var(--turquoise)}
+.btn-cart:hover{background:var(--turquoise);color:#fff}
+.cart-count{position:absolute;top:-6px;right:-6px;background:var(--rose);color:#fff;font-size:.7rem;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.cart-count.pop{animation:pop .3s ease}
+@keyframes pop{50%{transform:scale(1.5)}}
+.btn-like{position:absolute;top:10px;right:10px;z-index:10;background:rgba(255,255,255,.92);border:none;cursor:pointer;transition:all .2s;border-radius:50%;width:30px;height:30px;display:flex;align-items:center;justify-content:center;padding:0}
+.btn-like svg{width:18px;height:18px;stroke:#bbb;fill:none;stroke-width:2;transition:all .2s}
+.btn-like:hover svg{stroke:var(--rose);transform:scale(1.15)}
+.btn-like.liked svg{stroke:var(--rose);fill:var(--rose);transform:scale(1.2)}
+.btn-like.liked{background:rgba(255,107,157,.1)}
+.color-bar{display:flex;gap:0;height:6px;margin:0}
+.color-bar span{flex:1}
+.boutique-hero{padding:120px 24px 40px;text-align:center;position:relative;overflow:hidden}
+.boutique-hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(168,85,247,.06),transparent 70%);z-index:0;pointer-events:none}
+.boutique-hero h1{font-size:clamp(2rem,5vw,3.5rem);margin-bottom:8px;position:relative;z-index:1}
+.boutique-hero h1 span{color:var(--violet)}
+.boutique-hero>p{font-size:1.1rem;color:#636E72;max-width:580px;margin:0 auto;position:relative;z-index:1}
+.cyl-signature{display:flex;justify-content:center;align-items:center;gap:12px;padding:24px 0 8px;position:relative;z-index:1}
+.cyl-signature .cyl{height:22px;border-radius:20px;opacity:.45;animation:cylPulse 3s ease-in-out infinite}
+.cyl-signature .cyl:nth-child(1){animation-delay:0s}.cyl-signature .cyl:nth-child(2){animation-delay:.2s}
+.cyl-signature .cyl:nth-child(3){animation-delay:.4s}.cyl-signature .cyl:nth-child(4){animation-delay:.6s}
+.cyl-signature .cyl:nth-child(5){animation-delay:.8s}.cyl-signature .cyl:nth-child(6){animation-delay:1s}
+.cyl-signature .cyl:nth-child(7){animation-delay:1.2s}
+@keyframes cylPulse{0%,100%{opacity:.35;transform:scaleX(1)}50%{opacity:.65;transform:scaleX(1.08)}}
+.cyl-tag{display:inline-flex;align-items:center;gap:6px;margin-top:6px;padding:6px 16px;border-radius:50px;background:rgba(168,85,247,.1);color:var(--violet);font-size:.8rem;font-weight:700;font-family:var(--fh);position:relative;z-index:1}
+.boutique-filters{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:1000px;margin:32px auto 40px;padding:0 20px}
+.filter-chip{padding:10px 22px;border-radius:50px;border:2px solid #E0E0E0;background:#fff;font-weight:700;font-size:.88rem;color:var(--text);transition:all .25s;font-family:var(--fb)}
+.filter-chip:hover{border-color:var(--turquoise);transform:translateY(-2px)}
+.filter-chip.active{background:var(--violet);color:#fff;border-color:var(--violet);box-shadow:0 4px 16px rgba(168,85,247,.3)}
+.filter-chip .chip-count{font-size:.72rem;opacity:.6;margin-left:4px}
+.shop-section{padding:0 24px 60px;max-width:1440px;margin:0 auto}
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px;max-width:1280px;margin:0 auto}
+.product{background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06);transition:transform .3s,box-shadow .3s;display:flex;flex-direction:column;position:relative}
+.product:hover{transform:translateY(-6px);box-shadow:0 12px 40px rgba(0,0,0,.12)}
+.product-badge{position:absolute;top:12px;left:12px;z-index:5;padding:4px 12px;border-radius:20px;font-size:.72rem;font-weight:800;color:#fff;font-family:var(--fh)}
+.badge-new{background:var(--turquoise)}
+.badge-promo{background:var(--rose)}
+.badge-coup{background:var(--orange)}
+.product-img{height:180px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;overflow:hidden}
+.product-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.2),transparent 60%)}
+.pi-chantier{background:linear-gradient(160deg,#FFD4BE,#FFB5A0)}
+.pi-police{background:linear-gradient(160deg,#B8D8FF,#87CEEB)}
+.pi-pompier{background:linear-gradient(160deg,#FFCCD4,#FFB5C2)}
+.pi-relooking{background:linear-gradient(160deg,#D8BFFF,#C3A6FF)}
+.pi-epicerie{background:linear-gradient(160deg,#C8F0D8,#A8E8BE)}
+.pi-medecin{background:linear-gradient(160deg,#A8E8E6,#7FDBDA)}
+.pi-garage{background:linear-gradient(160deg,#FFE9A8,#FFD87F)}
+.pi-general{background:linear-gradient(160deg,#E8D5FF,#D4BFFF)}
+.pi-ocre{background:linear-gradient(160deg,#FFD700,var(--orange))}
+.pi-rose{background:linear-gradient(160deg,#FFB6C1,var(--rose))}
+.product-body{padding:16px 18px 18px;flex:1;display:flex;flex-direction:column}
+.product-cat{font-size:.72rem;font-weight:700;color:var(--violet);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+.product h3{font-size:1rem;line-height:1.3;margin-bottom:6px}
+.product-desc{font-size:.82rem;color:#636E72;line-height:1.45;margin-bottom:12px;flex:1}
+.product-age{display:inline-flex;align-items:center;gap:4px;font-size:.75rem;color:var(--turquoise);font-weight:700;margin-bottom:10px}
+.product-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.product-price{font-size:1.5rem;font-weight:800;font-family:var(--fh);color:var(--text)}
+.product-price small{font-size:.78rem;font-weight:600;text-decoration:line-through;color:#bbb;margin-left:4px}
+.product-btn{background:var(--rose);color:#fff;border:none;padding:9px 18px;border-radius:50px;font-weight:700;font-size:.82rem;transition:transform .2s,background .2s;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
+.product-btn:hover{transform:scale(1.07);background:var(--violet)}
+.shop-promo{max-width:1280px;margin:0 auto 32px;background:linear-gradient(135deg,var(--violet),var(--rose));border-radius:var(--r);padding:24px 32px;display:flex;align-items:center;justify-content:space-between;gap:20px;color:#fff;flex-wrap:wrap}
+.shop-promo-text h3{font-size:1.3rem;margin-bottom:4px}
+.shop-promo-text p{font-size:.88rem;opacity:.85}
+.shop-promo-btn{background:var(--jaune);color:var(--text);border:none;padding:12px 28px;border-radius:50px;font-weight:800;font-size:.92rem;font-family:var(--fh);transition:transform .2s}
+.shop-promo-btn:hover{transform:scale(1.05)}
+.boutique-search{max-width:620px;margin:24px auto 0;padding:0 20px}
+.boutique-search input{width:100%;padding:14px 18px;border:2px solid #E0E0E0;border-radius:50px;font-size:1rem;font-family:var(--fb);transition:border-color .2s,box-shadow .2s}
+.boutique-search input:focus{outline:none;border-color:var(--turquoise);box-shadow:0 0 0 4px rgba(78,205,196,.15)}
+.shop-news{max-width:700px;margin:0 auto 40px;text-align:center;padding:32px 24px;background:#fff;border-radius:var(--r);box-shadow:0 4px 20px rgba(0,0,0,.06)}
+.shop-news h3{font-size:1.3rem;margin-bottom:6px}
+.shop-news p{font-size:.88rem;color:#636E72;margin-bottom:16px}
+.shop-news-form{display:flex;gap:8px;max-width:440px;margin:0 auto}
+.shop-news-form input{flex:1;padding:12px 16px;border-radius:50px;border:2px solid #E0E0E0;font-size:.9rem;font-family:var(--fb);transition:border-color .2s}
+.shop-news-form input:focus{outline:none;border-color:var(--turquoise)}
+.shop-news-form button{background:var(--rose);color:#fff;border:none;padding:12px 24px;border-radius:50px;font-weight:700;font-size:.9rem;transition:transform .2s}
+.shop-news-form button:hover{transform:scale(1.03)}
+.cyl-row{display:flex;justify-content:center;align-items:center;gap:10px;padding:10px 0;overflow:hidden}
+.cyl{height:18px;border-radius:20px;opacity:.32}
+footer{background:var(--text);color:#fff;padding:48px 20px;text-align:center}
+footer p{opacity:.6;margin-bottom:8px;font-size:.88rem}
+footer .flink{display:flex;gap:20px;justify-content:center;margin:16px 0;flex-wrap:wrap}
+footer .flink a{color:#fff;text-decoration:none;opacity:.7;font-size:.88rem;transition:opacity .3s}
+footer .flink a:hover{opacity:1}
+@media(max-width:768px){
+  nav ul{display:none}
+  .boutique-hero{padding-top:100px}
+  .shop-grid{grid-template-columns:repeat(2,1fr)}
+  .shop-promo{flex-direction:column;text-align:center}
+}
+@media(max-width:480px){
+  .shop-grid{grid-template-columns:1fr}
+  .product-img{height:150px;font-size:2.8rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+<a href="#top" class="logo">Mini<span>vers</span> <span style="color:var(--violet);font-size:1rem;font-weight:700">Boutique</span></a>
+<ul>
+<li><a href="#filters" style="color:var(--violet)">Catégories</a></li>
+<li><a href="#promo">Promotions</a></li>
+<li><a href="#contact-boutique">Contact</a></li>
+</ul>
+<div class="nav-right">
+<button class="btn-cart" onclick="toggleCart()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg><span class="cart-count" id="cartCount">0</span></button>
+<button style="background:var(--rose);color:#fff;border:none;padding:10px 20px;border-radius:50px;font-weight:700;font-size:.9rem" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'">Mon panier</button>
+</div>
+</nav>
+<a id="top"></a>
+
+<div class="color-bar"><span style="background:var(--rose)"></span><span style="background:var(--turquoise)"></span><span style="background:var(--jaune)"></span><span style="background:var(--violet)"></span></div>
+
+<section class="boutique-hero">
+<h1>Notre <span>Boutique</span></h1>
+<p>Jouets, jeux et accessoires pour nourrir l'imagination et la créativité des enfants de 0 à 12 ans.</p>
+<div class="boutique-search"><input type="text" id="searchInput" placeholder="🔍 Rechercher un jeu ou un univers..."></div>
+<div class="cyl-signature" aria-label="Nos univers">
+<div class="cyl" style="background:var(--rose);width:80px"></div><div class="cyl" style="background:var(--turquoise);width:120px"></div><div class="cyl" style="background:var(--jaune);width:60px"></div><div class="cyl" style="background:var(--violet);width:100px"></div><div class="cyl" style="background:var(--bleu);width:75px"></div><div class="cyl" style="background:var(--orange);width:90px"></div><div class="cyl" style="background:var(--rose);width:55px"></div>
+</div>
+<div class="cyl-tag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2 2"/></svg>7 univers de jeu · 100% amusement</div>
+</section>
+
+<div class="boutique-filters" id="filters">
+<button class="filter-chip active" data-cat="all">Tout <span class="chip-count">(14)</span></button>
+<button class="filter-chip" data-cat="imitation">Jeu d'imitation <span class="chip-count">(5)</span></button>
+<button class="filter-chip" data-cat="construction">Construction <span class="chip-count">(3)</span></button>
+<button class="filter-chip" data-cat="creatif">Créatif <span class="chip-count">(3)</span></button>
+<button class="filter-chip" data-cat="moteur">Motricité <span class="chip-count">(3)</span></button>
+<button class="filter-chip" data-cat="favorites">❤️ Favoris <span class="chip-count">(0)</span></button>
+</div>
+
+<div class="shop-promo" id="promo">
+<div class="shop-promo-text"><h3>🎁 -15% dès 2 articles achetés</h3><p>Et -25% dès 3 articles ! Offre valable toute l'année en boutique.</p></div>
+<button class="shop-promo-btn">Voir les conditions</button>
+</div>
+
+<section class="shop-section">
+<div class="shop-grid" id="shopGrid">
+
+<div class="product" data-cat="imitation" data-name="Coffre Chantier Complet">
+<div class="product-img pi-chantier">👷<button class="btn-like" data-name="Coffre Chantier Complet"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Imitation</div><h3>Coffre Chantier Complet</h3>
+<p class="product-desc">Casque, outils, ceinture et gilet fluo. Devient un vrai chef de chantier !</p>
+<div class="product-age">👶 3-8 ans</div>
+<div class="product-footer"><div class="product-price">24,90€</div><button class="product-btn" data-action="cart" data-name="Coffre Chantier Complet" data-price="24.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="imitation" data-name="Kit Police & Menottes">
+<div class="product-img pi-police">👮<button class="btn-like" data-name="Kit Police & Menottes"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<span class="product-badge badge-new">Nouveau</span>
+<div class="product-body">
+<div class="product-cat">Imitation</div><h3>Kit Police & Menottes</h3>
+<p class="product-desc">Badge, plaque, talkie-walkie et menottes en plastique sécurisé.</p>
+<div class="product-age">👶 4-10 ans</div>
+<div class="product-footer"><div class="product-price">19,90€</div><button class="product-btn" data-action="cart" data-name="Kit Police & Menottes" data-price="19.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="imitation" data-name="Camion Pompier Lumineux">
+<div class="product-img pi-pompier">🚒<button class="btn-like" data-name="Camion Pompier Lumineux"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Imitation</div><h3>Camion Pompier Lumineux</h3>
+<p class="product-desc">Camion avec sirènes, lumières et lance à eau fonctionnelle.</p>
+<div class="product-age">👶 3-8 ans</div>
+<div class="product-footer"><div class="product-price">34,90€</div><button class="product-btn" data-action="cart" data-name="Camion Pompier Lumineux" data-price="34.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="imitation" data-name="Coiffeuse Mini-Studio">
+<div class="product-img pi-relooking">💇<button class="btn-like" data-name="Coiffeuse Mini-Studio"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<span class="product-badge badge-promo">-20%</span>
+<div class="product-body">
+<div class="product-cat">Imitation</div><h3>Coiffeuse Mini-Studio</h3>
+<p class="product-desc">Miroir, sèche-cheveux sonore, peignes et accessoires de relooking.</p>
+<div class="product-age">👶 3-9 ans</div>
+<div class="product-footer"><div class="product-price">27,90€ <small>34,90€</small></div><button class="product-btn" data-action="cart" data-name="Coiffeuse Mini-Studio" data-price="27.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="imitation" data-name="Épicerie Marchande">
+<div class="product-img pi-epicerie">🏪<button class="btn-like" data-name="Épicerie Marchande"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Imitation</div><h3>Épicerie Marchande</h3>
+<p class="product-desc">Caisse sonore, Scanner, panier et 25 produits en bois. Prêt à vendre !</p>
+<div class="product-age">👶 3-10 ans</div>
+<div class="product-footer"><div class="product-price">39,90€</div><button class="product-btn" data-action="cart" data-name="Épicerie Marchande" data-price="39.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="construction" data-name="Boîte Briques 200 pcs">
+<div class="product-img pi-garage">🔧<button class="btn-like" data-name="Boîte Briques 200 pcs"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<span class="product-badge badge-coup">Coup de cœur</span>
+<div class="product-body">
+<div class="product-cat">Construction</div><h3>Boîte Briques 200 pcs</h3>
+<p class="product-desc">200 briques colorées compatibles LEGO. Créer sans limites.</p>
+<div class="product-age">👶 4-12 ans</div>
+<div class="product-footer"><div class="product-price">29,90€</div><button class="product-btn" data-action="cart" data-name="Boîte Briques 200 pcs" data-price="29.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="construction" data-name="Kit Engrenages Motorisés">
+<div class="product-img pi-garage">🧱<button class="btn-like" data-name="Kit Engrenages Motorisés"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Construction</div><h3>Kit Engrenages Motorisés</h3>
+<p class="product-desc">80 pièces pour créer des machines à engrenages qui tournent vraiment.</p>
+<div class="product-age">👶 5-12 ans</div>
+<div class="product-footer"><div class="product-price">32,90€</div><button class="product-btn" data-action="cart" data-name="Kit Engrenages Motorisés" data-price="32.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="construction" data-name="Forteresse Magnétique">
+<div class="product-img pi-ocre">🏗️<button class="btn-like" data-name="Forteresse Magnétique"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Construction</div><h3>Forteresse Magnétique</h3>
+<p class="product-desc">60 blocs magnétiques pour construire forteresses et châteaux.</p>
+<div class="product-age">👶 3-10 ans</div>
+<div class="product-footer"><div class="product-price">44,90€</div><button class="product-btn" data-action="cart" data-name="Forteresse Magnétique" data-price="44.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="créatif" data-name="Valise Peinture & Pinceaux">
+<div class="product-img pi-rose">🎨<button class="btn-like" data-name="Valise Peinture & Pinceaux"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<span class="product-badge badge-new">Nouveau</span>
+<div class="product-body">
+<div class="product-cat">Créatif</div><h3>Valise Peinture & Pinceaux</h3>
+<p class="product-desc">24 couleurs, 8 pinceaux, chevalet de table et tablier lavable.</p>
+<div class="product-age">👶 4-12 ans</div>
+<div class="product-footer"><div class="product-price">22,90€</div><button class="product-btn" data-action="cart" data-name="Valise Peinture & Pinceaux" data-price="22.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="créatif" data-name="Atelier Pâte à Modeler XL">
+<div class="product-img pi-relooking">✂️<button class="btn-like" data-name="Atelier Pâte à Modeler XL"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Créatif</div><h3>Atelier Pâte à Modeler XL</h3>
+<p class="product-desc">36 couleurs, moules, emporte-pièces et rouleaux. Sans danger.</p>
+<div class="product-age">👶 3-8 ans</div>
+<div class="product-footer"><div class="product-price">18,90€</div><button class="product-btn" data-action="cart" data-name="Atelier Pâte à Modeler XL" data-price="18.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="créatif" data-name="Kit Perles à Repasser 5000">
+<div class="product-img pi-general">🌈<button class="btn-like" data-name="Kit Perles à Repasser 5000"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Créatif</div><h3>Kit Perles à Repasser 5000</h3>
+<p class="product-desc">5000 perles, 5 modèles, papier cuisson et fermeture de rangement.</p>
+<div class="product-age">👶 5-12 ans</div>
+<div class="product-footer"><div class="product-price">16,90€</div><button class="product-btn" data-action="cart" data-name="Kit Perles à Repasser 5000" data-price="16.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="motricité" data-name="Portique Parcours Moteur">
+<div class="product-img pi-police">🚲<button class="btn-like" data-name="Portique Parcours Moteur"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<span class="product-badge badge-promo">-15%</span>
+<div class="product-body">
+<div class="product-cat">Motricité</div><h3>Portique Parcours Moteur</h3>
+<p class="product-desc">8 modules d'équilibre, rampe, tunnel et slalom modulable.</p>
+<div class="product-age">👶 2-7 ans</div>
+<div class="product-footer"><div class="product-price">59,90€ <small>69,90€</small></div><button class="product-btn" data-action="cart" data-name="Portique Parcours Moteur" data-price="59.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="motricité" data-name="Jeux d'Adresse Anneaux">
+<div class="product-img pi-epicerie">🤹<button class="btn-like" data-name="Jeux d'Adresse Anneaux"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Motricité</div><h3>Jeux d'Adresse Anneaux</h3>
+<p class="product-desc">6 anneaux colorés + piquets réglables. Atelier adresse et visée.</p>
+<div class="product-age">👶 3-8 ans</div>
+<div class="product-footer"><div class="product-price">14,90€</div><button class="product-btn" data-action="cart" data-name="Jeux d'Adresse Anneaux" data-price="14.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="motricité" data-name="Tapis d'Éveil Sensoriel">
+<div class="product-img pi-rose">🧸<button class="btn-like" data-name="Tapis d'Éveil Sensoriel"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Motricité</div><h3>Tapis d'Éveil Sensoriel</h3>
+<p class="product-desc">8 textures différentes, sonnettes et miroirs sécurisés. Lavable.</p>
+<div class="product-age">👶 0-3 ans</div>
+<div class="product-footer"><div class="product-price">37,90€</div><button class="product-btn" data-action="cart" data-name="Tapis d'Éveil Sensoriel" data-price="37.9">+ Panier</button></div>
+</div></div>
+
+</div>
+</section>
+
+<div class="cyl-row" aria-hidden="true"><div class="cyl" style="background:var(--rose);width:100px"></div><div class="cyl" style="background:var(--jaune);width:70px"></div><div class="cyl" style="background:var(--violet);width:130px"></div><div class="cyl" style="background:var(--turquoise);width:80px"></div></div>
+
+<div class="shop-news">
+<h3>📬 Restez informé !</h3>
+<p>Nouveautés, promotions et idées cadeaux — 1 à 2 emails par mois, jamais plus.</p>
+<form class="shop-news-form" onsubmit="event.preventDefault();alert('Merci ! Vous êtes inscrit(e).')"><input type="email" placeholder="Votre email..." required><button type="submit">S'inscrire</button></form>
+</div>
+
+<section id="contact-boutique" style="max-width:800px;margin:0 auto 60px;padding:32px 24px;background:#fff;border-radius:var(--r);box-shadow:0 4px 20px rgba(0,0,0,.06);text-align:center">
+<h3 style="font-size:1.4rem;margin-bottom:8px">Une question sur un produit ?</h3>
+<p style="color:#636E72;font-size:.92rem;margin-bottom:20px">On vous répond du lundi au samedi, sous 24h.</p>
+<div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center">
+<div style="display:flex;align-items:center;gap:8px;padding:12px 20px;border-radius:50px;background:rgba(78,205,196,.1);color:var(--turquoise);font-weight:700;font-size:.9rem"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>06 52 60 54 59</div>
+<div style="display:flex;align-items:center;gap:8px;padding:12px 20px;border-radius:50px;background:rgba(168,85,247,.1);color:var(--violet);font-weight:700;font-size:.9rem"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>begeault.maeva@gmail.com</div>
+<div style="display:flex;align-items:center;gap:8px;padding:12px 20px;border-radius:50px;background:rgba(255,107,157,.1);color:var(--rose);font-weight:700;font-size:.9rem"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>910 Rte de Nîmes, Le Crès</div>
+</div>
+</section>
+
+<div class="cart-overlay" id="cartOverlay" style="position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cartDrawer" style="position:fixed;top:0;right:-440px;width:420px;max-width:92vw;height:100%;background:#fff;z-index:201;transition:right .35s;display:flex;flex-direction:column;box-shadow:-4px 0 30px rgba(0,0,0,.12)">
+<div style="padding:18px 20px;border-bottom:2px solid var(--jaune);display:flex;justify-content:space-between;align-items:center"><h3 style="font-size:1.25rem">Votre panier</h3><button style="background:none;border:none;font-size:1.4rem;color:var(--text)" onclick="toggleCart()">&times;</button></div>
+<div style="flex:1;overflow-y:auto;padding:14px" id="cartBody"><div style="text-align:center;padding:40px 20px;color:#636E72" id="cartEmpty"><p>Votre panier est vide</p></div><div id="cartItems"></div></div>
+<div style="padding:14px 20px;border-top:2px solid var(--jaune)"><div style="display:flex;justify-content:space-between;font-size:1.25rem;font-weight:800;font-family:var(--fh);margin-bottom:12px"><span>Total</span><span id="cartTotal">0€</span></div><button style="width:100%;background:var(--rose);color:#fff;border:none;padding:14px;border-radius:50px;font-size:1.05rem;font-weight:800;font-family:var(--fh);transition:transform .2s" onclick="validateCart()">Valider ma commande</button></div>
+</div>
+
+<footer>
+<div style="margin-bottom:16px"><a href="#" class="logo" style="font-size:1.8rem;color:#fff">Mini<span>vers</span></a></div>
+<p>Parc Indoor & Boutique de Jeux — Le Crès, Montpellier</p>
+<div class="flink"><a href="#">Accueil</a><a href="#">Parc</a><a href="#">Tarifs</a><a href="#">Boutique</a><a href="#">Anniversaires</a><a href="#">Agenda</a><a href="#">Mentions légales</a></div>
+<p style="margin-top:20px;font-size:.78rem">&copy; 2026 Minivers — Tous droits réservés</p>
+</footer>
+
+<script>
+var cart=[];
+function addToCart(name,price){
+  var existing=cart.find(function(i){return i.name===name});
+  if(existing){existing.qty++}else{cart.push({name:name,price:price,qty:1})}
+  renderCart();
+  var el=document.getElementById('cartCount');
+  el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');
+}
+function removeFromCart(idx){cart.splice(idx,1);renderCart()}
+function renderCart(){
+  var count=cart.reduce(function(s,i){return s+i.qty},0);
+  document.getElementById('cartCount').textContent=count;
+  var itemsEl=document.getElementById('cartItems');
+  var emptyEl=document.getElementById('cartEmpty');
+  if(!cart.length){itemsEl.innerHTML='';emptyEl.style.display='block';document.getElementById('cartTotal').textContent='0€';return}
+  emptyEl.style.display='none';
+  var html='';var total=0;
+  cart.forEach(function(item,idx){
+    var sub=item.price*item.qty;total+=sub;
+    html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:12px;background:var(--bg);margin-bottom:8px"><div><h4 style="font-size:.92rem;margin-bottom:2px">'+item.name+(item.qty>1?' x'+item.qty:'')+'</h4><p style="font-size:.78rem;color:#636E72">'+item.price.toFixed(2).replace('.',',')+'€ / unité</p></div><div style="display:flex;align-items:center;gap:6px"><span style="font-weight:700;font-family:var(--fh);color:var(--rose)">'+sub.toFixed(2).replace('.',',')+'€</span><button style="background:none;border:none;color:#bbb;font-size:1.1rem" onclick="removeFromCart('+idx+')">&times;</button></div></div>';
+  });
+  itemsEl.innerHTML=html;
+  document.getElementById('cartTotal').textContent=total.toFixed(2).replace('.',',')+'€';
+}
+function toggleCart(){
+  var overlay=document.getElementById('cartOverlay'),drawer=document.getElementById('cartDrawer');
+  if(overlay.style.opacity==='1'){overlay.style.opacity='0';overlay.style.pointerEvents='none';drawer.style.right='-440px'}
+  else{overlay.style.opacity='1';overlay.style.pointerEvents='auto';drawer.style.right='0'}
+}
+function validateCart(){
+  if(!cart.length){alert('Votre panier est vide !');return}
+  alert('Commande validée ! Vous recevrez un email de confirmation.');
+  cart=[];renderCart();toggleCart();
+}
+
+var likedProducts=JSON.parse(localStorage.getItem('minivers_likes')||'[]');
+
+function toggleLike(btn){
+  var name=btn.getAttribute('data-name');
+  var index=likedProducts.indexOf(name);
+  if(index===-1){likedProducts.push(name);btn.classList.add('liked')}
+  else{likedProducts.splice(index,1);btn.classList.remove('liked')}
+  localStorage.setItem('minivers_likes',JSON.stringify(likedProducts));
+  updateFavoritesCount();
+  var activeChip=document.querySelector('.filter-chip.active');
+  if(activeChip&&activeChip.dataset.cat==='favorites'){filterProducts('favorites')}
+}
+
+function updateFavoritesCount(){
+  var el=document.querySelector('[data-cat="favorites"] .chip-count');
+  if(el){el.textContent='('+likedProducts.length+')'}
+}
+
+function filterProducts(cat){
+  var products=document.querySelectorAll('.product');
+  for(var i=0;i<products.length;i++){
+    var p=products[i];var name=p.dataset.name;
+    if(cat==='all'){p.style.display='flex'}
+    else if(cat==='favorites'){p.style.display=likedProducts.includes(name)?'flex':'none'}
+    else{p.style.display=p.dataset.cat===cat?'flex':'none'}
+  }
+}
+
+var searchInput=document.getElementById('searchInput');
+if(searchInput){
+  searchInput.addEventListener('input',function(e){
+    var term=e.target.value.toLowerCase().trim();
+    var products=document.querySelectorAll('.product');
+    var activeChip=document.querySelector('.filter-chip.active');
+    var cat=activeChip?activeChip.dataset.cat:'all';
+    for(var i=0;i<products.length;i++){
+      var p=products[i];
+      var name=p.dataset.name.toLowerCase();
+      var desc=p.querySelector('.product-desc')?p.querySelector('.product-desc').textContent.toLowerCase():'';
+      var searchText=name+' '+desc;
+      var matchesSearch=!term||searchText.includes(term);
+      var matchesCat=true;
+      if(cat==='all'){matchesCat=true}
+      else if(cat==='favorites'){matchesCat=likedProducts.includes(p.dataset.name)}
+      else{matchesCat=p.dataset.cat===cat}
+      p.style.display=(matchesSearch&&matchesCat)?'flex':'none';
+    }
+  });
+}
+
+var chips=document.querySelectorAll('.filter-chip');
+for(var i=0;i<chips.length;i++){
+  (function(chip){
+    chip.addEventListener('click',function(){
+      for(var j=0;j<chips.length;j++){chips[j].classList.remove('active')}
+      chip.classList.add('active');
+      filterProducts(chip.dataset.cat);
+    });
+  })(chips[i]);
+}
+
+var grid=document.getElementById('shopGrid');
+if(grid){
+  grid.addEventListener('click',function(e){
+    var likeBtn=e.target.closest('.btn-like');
+    if(likeBtn){
+      toggleLike(likeBtn);
+      return;
+    }
+    var cartBtn=e.target.closest('[data-action="cart"]');
+    if(cartBtn){
+      var name=cartBtn.getAttribute('data-name');
+      var price=parseFloat(cartBtn.getAttribute('data-price'));
+      addToCart(name,price);
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  for(var i=0;i<likedProducts.length;i++){
+    var btn=document.querySelector('button[data-name="'+likedProducts[i]+'"]');
+    if(btn){btn.classList.add('liked')}
+  }
+  updateFavoritesCount();
+});
+</script>
+</body>
+</html>
