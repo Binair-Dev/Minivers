@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minivers — Parc Indoor Enfants & Boutique</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--rose:#FF6B9D;--turquoise:#4ECDC4;--jaune:#FFE66D;--violet:#A855F7;--bleu:#60A5FA;--orange:#FB923C;--bg:#FFF8F0;--text:#2D3436;--fh:'Baloo 2',cursive;--fb:'Nunito',sans-serif;--r:20px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--fb);color:var(--text);background:var(--bg);overflow-x:hidden}
+h1,h2,h3,h4{font-family:var(--fh)}
+button{cursor:pointer;font-family:var(--fb)}
+nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,.93);backdrop-filter:blur(10px);padding:10px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:3px solid var(--jaune)}
+.logo{font-family:var(--fh);font-size:1.5rem;font-weight:800;text-decoration:none;color:var(--text)}.logo span{color:var(--rose)}
+nav ul{list-style:none;display:flex;gap:20px}
+nav a{text-decoration:none;color:var(--text);font-weight:600;font-size:.9rem;transition:color .3s}
+nav a:hover{color:var(--rose)}
+.nav-right{display:flex;align-items:center;gap:12px}
+.btn-cart{position:relative;background:none;border:2px solid var(--turquoise);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;transition:all .3s}
+.btn-cart:hover{background:var(--turquoise)}.btn-cart:hover svg{stroke:#fff}
+.cart-count{position:absolute;top:-6px;right:-6px;background:var(--rose);color:#fff;font-size:.7rem;font-weight:700;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.cart-count.pop{animation:pop .3s ease}
+@keyframes pop{50%{transform:scale(1.5)}}
+.btn-resa{background:var(--rose);color:#fff;border:none;padding:10px 20px;border-radius:50px;font-weight:700;font-size:.9rem;transition:transform .3s,box-shadow .3s}
+.btn-resa:hover{transform:scale(1.05);box-shadow:0 4px 20px rgba(255,107,157,.4)}
+.sock-banner{background:var(--jaune);text-align:center;padding:10px 16px;font-weight:700;font-size:.88rem;display:flex;align-items:center;justify-content:center;gap:8px;position:relative;z-index:101}
+.hero{min-height:90vh;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--rose),var(--violet),var(--turquoise));text-align:center;color:#fff;padding:120px 20px 60px;position:relative}
+.hero h1{font-size:clamp(2.2rem,5.5vw,4rem);margin-bottom:12px;text-shadow:2px 2px 0 rgba(0,0,0,.1)}
+.hero>p{font-size:1.15rem;margin-bottom:28px;opacity:.93;max-width:500px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.btn-hero{background:var(--jaune);color:var(--text);padding:14px 36px;border-radius:50px;font-size:1.05rem;font-weight:800;text-decoration:none;font-family:var(--fh);transition:transform .3s;border:none;display:inline-flex;align-items:center;gap:8px}
+.btn-hero:hover{transform:scale(1.07) rotate(-1deg)}
+.btn-hero.outline{background:transparent;border:2.5px solid #fff;color:#fff}
+.sock-hero{margin-top:24px;background:rgba(255,255,255,.2);backdrop-filter:blur(6px);border-radius:50px;padding:10px 24px;display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:.9rem}
+.wave{width:100%;line-height:0;margin-top:-2px}.wave svg{width:100%;height:70px}
+.section{padding:80px 20px;max-width:1200px;margin:0 auto}
+.stitle{text-align:center;font-size:clamp(1.6rem,3.5vw,2.5rem);margin-bottom:12px}
+.stitle-sub{text-align:center;color:#636E72;margin-bottom:44px;font-size:1rem;max-width:520px;margin-left:auto;margin-right:auto}
+.steps-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;max-width:960px;margin:0 auto;position:relative}
+.steps-grid::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:3px;background:linear-gradient(90deg,var(--rose),var(--turquoise),var(--violet),var(--jaune));border-radius:2px}
+.step{text-align:center;position:relative;z-index:1}
+.step-num{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;font-weight:800;font-family:var(--fh);color:#fff;margin:0 auto 14px;box-shadow:0 4px 16px rgba(0,0,0,.1)}
+.step:nth-child(1) .step-num{background:var(--rose)}.step:nth-child(2) .step-num{background:var(--turquoise)}.step:nth-child(3) .step-num{background:var(--violet)}.step:nth-child(4) .step-num{background:var(--jaune);color:var(--text)}
+.step h3{font-size:1.05rem;margin-bottom:5px}.step p{font-size:.85rem;color:#636E72;line-height:1.5}
+.bg-t{background:linear-gradient(180deg,var(--turquoise),#3DBDB5);color:#fff}
+.bg-t .stitle-sub{color:rgba(255,255,255,.85)}
+.fresque{display:flex;gap:16px;max-width:1200px;margin:0 auto;padding:0 20px 80px;overflow-x:auto;scroll-snap-type:x mandatory}
+.fresque::-webkit-scrollbar{height:6px}.fresque::-webkit-scrollbar-thumb{background:var(--jaune);border-radius:3px}
+.fresque-card{flex:0 0 200px;scroll-snap-align:start;background:#fff;border-radius:var(--r);padding:24px 16px;text-align:center;color:var(--text);transition:transform .3s}
+.fresque-card:hover{transform:translateY(-5px)}
+.fresque-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:1.5rem}
+.fresque-card h4{font-size:.92rem;margin-bottom:3px}.fresque-card p{font-size:.78rem;color:#636E72}
+.pricing{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:20px;max-width:880px;margin:0 auto}
+.pcard{background:#fff;border-radius:var(--r);padding:28px 16px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.06);transition:transform .3s;position:relative}
+.pcard:hover{transform:translateY(-4px)}
+.pcard.pop{border:3px solid var(--rose);transform:scale(1.04)}.pcard.pop:hover{transform:scale(1.04) translateY(-4px)}
+.badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:var(--rose);color:#fff;padding:4px 14px;border-radius:20px;font-size:.78rem;font-weight:700;white-space:nowrap}
+.plabel{font-size:.82rem;color:var(--violet);font-weight:700;margin-bottom:6px}
+.pval{font-size:2.2rem;font-weight:800;font-family:var(--fh)}.pval small{font-size:.8rem;font-weight:600}
+.pdesc{font-size:.85rem;opacity:.6;margin-top:3px}
+.pcard-btn{margin-top:12px;background:var(--turquoise);color:#fff;border:none;padding:8px 20px;border-radius:50px;font-weight:700;font-size:.82rem;transition:transform .2s}
+.pcard-btn:hover{transform:scale(1.05)}
+.pass{background:linear-gradient(135deg,var(--violet),var(--rose));color:#fff;border-radius:var(--r);padding:28px;text-align:center;max-width:360px;margin:32px auto 0}
+.pass .pval{color:var(--jaune)}
+.pass-btn{margin-top:12px;background:var(--jaune);color:var(--text);border:none;padding:10px 24px;border-radius:50px;font-weight:800;font-size:.9rem;transition:transform .2s}
+.pass-btn:hover{transform:scale(1.05)}
+.bday-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;max-width:1000px;margin:0 auto}
+.bday{background:#fff;border-radius:var(--r);padding:28px;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,.06);transition:transform .3s}
+.bday:hover{transform:translateY(-4px)}
+.bday h3{font-size:1.15rem;color:var(--rose);margin-bottom:8px}
+.bday-price{font-size:1.4rem;font-weight:800;font-family:var(--fh)}.bday-price small{font-size:.82rem;font-weight:400}
+.bday ul{list-style:none;text-align:left;margin:14px 0}.bday li{padding:4px 0;font-size:.88rem}.bday li::before{content:'✓ ';color:var(--turquoise);font-weight:700}
+.bday-btn{background:var(--rose);color:#fff;border:none;padding:10px 24px;border-radius:50px;font-weight:700;transition:transform .2s}
+.bday-btn:hover{transform:scale(1.05)}
+.events-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;max-width:1000px;margin:0 auto}
+.event{background:#fff;border-radius:var(--r);overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06);transition:transform .3s}
+.event:hover{transform:translateY(-4px)}
+.event-img{height:130px;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1.15rem;color:#fff;font-weight:700;padding:16px}
+.event:nth-child(1) .event-img{background:linear-gradient(135deg,var(--rose),var(--orange))}
+.event:nth-child(2) .event-img{background:linear-gradient(135deg,var(--turquoise),var(--bleu))}
+.event:nth-child(3) .event-img{background:linear-gradient(135deg,var(--violet),var(--rose))}
+.ev-body{padding:18px}.event h3{font-size:1.05rem;margin-bottom:4px}.event p{font-size:.85rem;color:#636E72;line-height:1.5}
+.ev-date{font-size:.8rem;color:var(--violet);font-weight:700;margin-bottom:6px}
+.bg-v{background:linear-gradient(135deg,#7C3AED,var(--violet));color:#fff}
+.bg-v .stitle-sub{color:rgba(255,255,255,.8)}
+.bout-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;max-width:1000px;margin:0 auto}
+.bout{background:rgba(255,255,255,.15);border-radius:var(--r);padding:24px;text-align:center;backdrop-filter:blur(5px);transition:transform .3s}
+.bout:hover{transform:translateY(-4px)}
+.bout-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;background:rgba(255,255,255,.2)}
+.bout h4{font-size:1rem;margin-bottom:4px}.bout p{font-size:.82rem;opacity:.75}
+.bout-btn{margin-top:10px;background:var(--jaune);color:var(--text);border:none;padding:8px 18px;border-radius:50px;font-weight:700;font-size:.82rem;transition:transform .2s}
+.bout-btn:hover{transform:scale(1.05)}
+.val-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:900px;margin:0 auto}
+.val-tag{padding:8px 18px;border-radius:50px;font-weight:700;font-size:.85rem;border:2px solid;background:rgba(255,255,255,.85)}
+.val-tag.t1{border-color:var(--rose);color:var(--rose)}.val-tag.t2{border-color:var(--turquoise);color:var(--turquoise)}
+.val-tag.t3{border-color:var(--violet);color:var(--violet)}.val-tag.t4{border-color:var(--orange);color:var(--orange)}
+.val-tag.t5{border-color:var(--bleu);color:var(--bleu)}.val-tag.t6{border-color:#C4A000;color:#C4A000}
+.infos-wrap{display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:1100px;margin:0 auto;align-items:start}
+.info-row{display:flex;gap:12px;margin-bottom:18px;align-items:flex-start}
+.info-row h3{font-size:1.05rem;margin-bottom:4px}.info-row p{color:#636E72;line-height:1.6;font-size:.92rem}
+.transport-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.transport-item{background:rgba(78,205,196,.1);border-radius:12px;padding:10px 12px;font-size:.85rem}
+.transport-item strong{display:block;margin-bottom:2px;color:var(--turquoise)}
+.map-frame{border-radius:var(--r);overflow:hidden;border:3px solid var(--turquoise);height:400px}
+.map-frame iframe{width:100%;height:100%;border:0}
+.notice{background:var(--jaune);border-radius:var(--r);padding:14px 24px;text-align:center;font-weight:700;font-size:.92rem;margin-top:24px;display:flex;align-items:center;justify-content:center;gap:8px}
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s}
+.cart-overlay.open{opacity:1;pointer-events:auto}
+.cart-drawer{position:fixed;top:0;right:-440px;width:420px;max-width:92vw;height:100%;background:#fff;z-index:201;transition:right .35s;display:flex;flex-direction:column;box-shadow:-4px 0 30px rgba(0,0,0,.12)}
+.cart-drawer.open{right:0}
+.cart-header{padding:18px 20px;border-bottom:2px solid var(--jaune);display:flex;justify-content:space-between;align-items:center}
+.cart-header h3{font-size:1.25rem}.cart-close{background:none;border:none;font-size:1.4rem;color:var(--text)}
+.cart-body{flex:1;overflow-y:auto;padding:14px}
+.cart-empty{text-align:center;padding:40px 20px;color:#636E72}
+.cart-empty svg{margin-bottom:12px;opacity:.4}
+.cart-item{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:12px;background:var(--bg);margin-bottom:8px}
+.cart-item-info h4{font-size:.92rem;margin-bottom:2px}.cart-item-info p{font-size:.78rem;color:#636E72}
+.cart-item-right{display:flex;align-items:center;gap:6px}
+.cart-item-price{font-weight:700;font-family:var(--fh);color:var(--rose)}
+.cart-item-rm{background:none;border:none;color:#bbb;font-size:1.1rem;transition:color .2s}.cart-item-rm:hover{color:var(--rose)}
+.cart-sock{background:rgba(255,230,109,.35);border-radius:12px;padding:10px 14px;margin:10px 0;font-size:.82rem;font-weight:600;display:flex;align-items:center;gap:8px}
+.cart-footer{padding:14px 20px;border-top:2px solid var(--jaune)}
+.cart-total{display:flex;justify-content:space-between;font-size:1.25rem;font-weight:800;font-family:var(--fh);margin-bottom:12px}
+.btn-val{width:100%;background:var(--rose);color:#fff;border:none;padding:14px;border-radius:50px;font-size:1.05rem;font-weight:800;font-family:var(--fh);transition:transform .2s}
+.btn-val:hover{transform:scale(1.03)}
+footer{background:var(--text);color:#fff;padding:48px 20px;text-align:center}
+footer p{opacity:.6;margin-bottom:8px;font-size:.88rem}
+.flink{display:flex;gap:20px;justify-content:center;margin:16px 0;flex-wrap:wrap}
+.flink a{color:#fff;text-decoration:none;opacity:.7;font-size:.88rem;transition:opacity .3s}.flink a:hover{opacity:1}
+.nl{margin-top:20px;display:flex;gap:8px;max-width:400px;margin-left:auto;margin-right:auto}
+.nl input{flex:1;padding:12px 16px;border-radius:50px;border:none;font-size:.92rem}
+.nl button{background:var(--rose);color:#fff;border:none;padding:12px 24px;border-radius:50px;font-weight:700}
+@media(max-width:768px){nav ul{display:none}.hero h1{font-size:2rem}.section{padding:60px 16px}.steps-grid{grid-template-columns:1fr 1fr;gap:28px}.steps-grid::before{display:none}.pricing{grid-template-columns:1fr 1fr}.pcard.pop{transform:scale(1)}.infos-wrap{grid-template-columns:1fr}.map-frame{height:260px}.transport-grid{grid-template-columns:1fr}}
+@media(max-width:480px){.pricing{grid-template-columns:1fr}.steps-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="sock-banner">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D3436" stroke-width="2.5"><path d="M4 2h12v10l2 4a3 3 0 01-3 3H9a3 3 0 01-3-3V2z"/><path d="M6 2h8"/></svg>
+Chaussettes antidérapantes obligatoires — disponibles à l'accueil !
+</div>
+
+<nav>
+<a href="#" class="logo">Mini<span>vers</span></a>
+<ul>
+<li><a href="#comment">Comment ça marche</a></li>
+<li><a href="#activites">Activités</a></li>
+<li><a href="#tarifs">Tarifs</a></li>
+<li><a href="#anniversaires">Anniversaires</a></li>
+<li><a href="#evenements">Événements</a></li>
+<li><a href="#boutique">Boutique</a></li>
+<li><a href="#infos">Infos</a></li>
+</ul>
+<div class="nav-right">
+<button class="btn-cart" onclick="toggleCart()">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+<span class="cart-count" id="cartCount">0</span>
+</button>
+<button class="btn-resa" onclick="toggleCart()">Réserver</button>
+</div>
+</nav>
+
+<section class="hero">
+<h1>Bienvenue au Minivers !</h1>
+<p>Le parc indoor où les enfants s'épanouissent, entre aventures et découvertes.</p>
+<div class="hero-cta">
+<a href="#tarifs" class="btn-hero">Réserver une session</a>
+<a href="#comment" class="btn-hero outline">Comment ça marche ?</a>
+</div>
+<div class="sock-hero">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M4 2h12v10l2 4a3 3 0 01-3 3H9a3 3 0 01-3-3V2z"/></svg>
+Pensez à vos chaussettes antidérapantes !
+</div>
+</section>
+
+<div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--bg)" d="M0,35 C360,70 720,0 1080,35 C1260,52 1380,18 1440,35 L1440,70 L0,70Z"/></svg></div>
+
+<!-- COMMENT ÇA MARCHE -->
+<section class="section" id="comment">
+<h2 class="stitle">Comment ça marche ?</h2>
+<p class="stitle-sub">4 étapes simples et votre journée au Minivers est prête !</p>
+<div class="steps-grid">
+<div class="step"><div class="step-num">1</div><h3>Choisissez</h3><p>Sélectionnez votre session, date et nombre de participants.</p></div>
+<div class="step"><div class="step-num">2</div><h3>Réservez</h3><p>Validez votre panier et recevez votre confirmation par email.</p></div>
+<div class="step"><div class="step-num">3</div><h3>Venez</h3><p>Chaussettes antidérapantes aux pieds, c'est parti !</p></div>
+<div class="step"><div class="step-num">4</div><h3>Amusez-vous</h3><p>Profitez des espaces, activités et de la boutique !</p></div>
+</div>
+</section>
+
+<div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--turquoise)" d="M0,35 C480,0 960,70 1440,35 L1440,0 L0,0Z"/></svg></div>
+
+<!-- ACTIVITÉS - FRESQUE -->
+<section class="bg-t" id="activites">
+<div class="section">
+<h2 class="stitle" style="color:#fff">Nos Univers</h2>
+<p class="stitle-sub">Scrollz pour découvrir tous nos espaces de jeu !</p>
+</div>
+<div class="fresque">
+<div class="fresque-card"><div class="fresque-icon" style="background:rgba(255,107,157,.15)">👶</div><h4>Les Tout-Petits</h4><p>0-3 ans, espace sensoriel</p></div>
+<div class="fresque-card"><div class="fresque-icon" style="background:rgba(78,205,196,.15)">🏗️</div><h4>Grande Structure</h4><p>Labyrinthes et toboggans</p></div>
+<div class="fresque-card"><div class="fresque-icon" style="background:rgba(168,85,247,.15)">🛝</div><h4>Toboggan Géant</h4><p>Sensations garanties</p></div>
+<div class="fresque-card"><div class="fresque-icon" style="background:rgba(251,146,60,.15)">🎭</div><h4>Jeux Immersifs</h4><p>Univers thématiques</p></div>
+<div class="fresque-card"><div class="fresque-icon" style="background:rgba(96,165,250,.15)">🎪</div><h4>Jeux de Rôle</h4><p>Déguisements et scénarios</p></div>
+<div class="fresque-card"><div class="fresque-icon" style="background:rgba(255,230,109,.3)">🏖️</div><h4>Bac à Sable</h4><p>Eau et sable intérieur</p></div>
+<div class="fresque-card"><div class="fresque-icon" style="background:rgba(52,211,153,.15)">🧗</div><h4>Espace Interactif</h4><p>Escalade et parcours</p></div>
+<div class="fresque-card"><div class="fresque-icon" style="background:rgba(255,107,157,.15)">🍿</div><h4>Snack</h4><p>Boissons et douceurs</p></div>
+</div>
+</section>
+
+<div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--bg)" d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,15 1440,30 L1440,70 L0,70Z"/></svg></div>
+
+<!-- TARIFS -->
+<section class="section" id="tarifs">
+<h2 class="stitle">Nos Tarifs — Session 2h</h2>
+<p class="stitle-sub">Ajoutez directement vos billets au panier !</p>
+<div class="pricing">
+<div class="pcard"><div class="plabel">Adulte</div><div class="pval">3€</div><div class="pdesc">Accompagnateur</div><button class="pcard-btn" onclick="addToCart('Session Adulte',3)">Ajouter</button></div>
+<div class="pcard pop"><div class="badge">Le plus choisi</div><div class="plabel">Enfant (2-12 ans)</div><div class="pval">15€</div><div class="pdesc">Session complète</div><button class="pcard-btn" onclick="addToCart('Session Enfant',15)">Ajouter</button></div>
+<div class="pcard"><div class="plabel">Bébé (6m-2 ans)</div><div class="pval">9€</div><div class="pdesc">Espace bébé</div><button class="pcard-btn" onclick="addToCart('Session Bébé',9)">Ajouter</button></div>
+<div class="pcard"><div class="plabel">Moins de 6 mois</div><div class="pval">Gratuit</div><div class="pdesc">Bienvenue !</div></div>
+</div>
+<div class="pass"><h3 style="margin-bottom:6px">Pass 10 sessions</h3><div class="pval" style="font-size:2rem">180€</div><p style="opacity:.8;font-size:.88rem;margin-top:4px">Économisez 30€ !</p><button class="pass-btn" onclick="addToCart('Pass 10 sessions',180)">Ajouter au panier</button></div>
+</section>
+
+<!-- VALEURS -->
+<section class="section">
+<h2 class="stitle">Nos Valeurs</h2>
+<p class="stitle-sub">Ce qui guide le Minivers au quotidien.</p>
+<div class="val-grid">
+<span class="val-tag t1">Apprentissage</span>
+<span class="val-tag t2">Ludique</span>
+<span class="val-tag t3">Créativité</span>
+<span class="val-tag t4">Motricité</span>
+<span class="val-tag t5">Confiance en soi</span>
+<span class="val-tag t6">Exploration</span>
+<span class="val-tag t1">Développement émotionnel</span>
+<span class="val-tag t2">Autonomie</span>
+<span class="val-tag t3">Éveil sensoriel</span>
+<span class="val-tag t4">Défouloir</span>
+</div>
+</section>
+
+<div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--rose)" d="M0,35 C240,70 480,0 720,35 C960,70 1200,0 1440,35 L1440,0 L0,0Z"/></svg></div>
+
+<!-- ANNIVERSAIRES -->
+<section class="section" id="anniversaires">
+<h2 class="stitle">Anniversaires au Minivers</h2>
+<p class="stitle-sub">Faites de son anniversaire un moment magique !</p>
+<div class="bday-grid">
+<div class="bday"><h3>Balade</h3><div class="bday-price">15€ <small>/ enfant</small></div><ul><li>2h d'accès au parc</li><li>Salle privatisée 30min</li><li>Boisson offerte</li></ul><button class="bday-btn" onclick="addToCart('Anniversaire Balade',15)">Ajouter</button></div>
+<div class="bday" style="border:3px solid var(--rose)"><h3>Fête</h3><div class="bday-price">22€ <small>/ enfant</small></div><ul><li>2h d'accès au parc</li><li>Salle privatisée 1h</li><li>Gâteau et bougies</li><li>Goûter complet</li><li>Cadeau surprise</li></ul><button class="bday-btn" onclick="addToCart('Anniversaire Fête',22)">Ajouter</button></div>
+<div class="bday"><h3>Royale</h3><div class="bday-price">30€ <small>/ enfant</small></div><ul><li>Accès illimité journée</li><li>Salle 1h30</li><li>Gâteau personnalisé</li><li>Animations</li><li>Sac cadeau + 10% boutique</li></ul><button class="bday-btn" onclick="addToCart('Anniversaire Royale',30)">Ajouter</button></div>
+</div>
+</section>
+
+<!-- ÉVÉNEMENTS -->
+<section class="section" id="evenements">
+<h2 class="stitle">Événements à venir</h2>
+<p class="stitle-sub">Des animations spéciales tout au long de l'année !</p>
+<div class="events-grid">
+<div class="event"><div class="event-img">Super Héros</div><div class="ev-body"><div class="ev-date">Samedi 21 Juin 2026</div><h3>Journée Super Héros</h3><p>Déguisements, challenges et rencontres avec vos héros préférés !</p></div></div>
+<div class="event"><div class="event-img">Nuit Étoilée</div><div class="ev-body"><div class="ev-date">Vendredi 4 Juillet 2026</div><h3>Nuit au Parc</h3><p>Une soirée magique avec jeux lumineux, contes et goûter de minuit.</p></div></div>
+<div class="event"><div class="event-img">Carnaval</div><div class="ev-body"><div class="ev-date">Mercredi 16 Juillet 2026</div><h3>Carnaval Géant</h3><p>Concours de déguisements, parade et surprises pour tous !</p></div></div>
+</div>
+</section>
+
+<div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--violet)" d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,15 1440,30 L1440,0 L0,0Z"/></svg></div>
+
+<!-- BOUTIQUE -->
+<section class="bg-v" id="boutique">
+<div class="section">
+<h2 class="stitle" style="color:#fff">Boutique Minivers</h2>
+<p class="stitle-sub">Prolongez la magie avec notre sélection de jeux et jouets.</p>
+<div class="bout-grid">
+<div class="bout"><div class="bout-icon"><svg viewBox="0 0 24 24"><path d="M21 6H3a1 1 0 00-1 1v4a1 1 0 001 1h1v5a2 2 0 002 2h12a2 2 0 002-2v-5h1a1 1 0 001-1V7a1 1 0 00-1-1zM8 14a1.5 1.5 0 110-3 1.5 1.5 0 010 3zm4-2a1 1 0 110-2 1 1 0 010 2zm4 2a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg></div><h4>Jeux de Société</h4><p>Pour les moments en famille</p><button class="bout-btn" onclick="addToCart('Jeux de Société',0)">Découvrir</button></div>
+<div class="bout"><div class="bout-icon"><svg viewBox="0 0 24 24"><path d="M4 2h16a1 1 0 011 1v18l-4-2-4 2-4-2-4 2V3a1 1 0 011-1z"/></svg></div><h4>Puzzles & Créativité</h4><p>Kits créatifs et coloriages</p><button class="bout-btn" onclick="addToCart('Puzzles',0)">Découvrir</button></div>
+<div class="bout"><div class="bout-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div><h4>Jouets d'Imagination</h4><p>Déguisements et figurines</p><button class="bout-btn" onclick="addToCart('Jouets',0)">Découvrir</button></div>
+<div class="bout"><div class="bout-icon"><svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1a2.996 2.996 0 00-5.5-1.65l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2z"/></svg></div><h4>Idées Cadeaux</h4><p>Coffrets pour toutes occasions</p><button class="bout-btn" onclick="addToCart('Cadeaux',0)">Découvrir</button></div>
+</div>
+</div>
+</section>
+
+<div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--bg)" d="M0,30 C360,0 720,60 1080,20 C1260,0 1380,40 1440,20 L1440,70 L0,70Z"/></svg></div>
+
+<!-- INFOS + CARTE -->
+<section class="section" id="infos">
+<h2 class="stitle">Infos Pratiques</h2>
+<p class="stitle-sub">Tout ce qu'il faut savoir avant votre venue.</p>
+<div class="infos-wrap">
+<div class="infos-left">
+<div class="info-row"><div><h3>Adresse</h3><p>910 Rte de Nîmes<br>34920 Le Crès</p></div></div>
+<div class="info-row"><div><h3>Horaires</h3><p>Mercredi - Vendredi : 10h - 18h<br>Samedi - Dimanche : 9h30 - 19h<br>Vacances scolaires : 9h30 - 19h</p></div></div>
+<div class="info-row"><div><h3>Contact</h3><p>04 67 XX XX XX<br>contact@minivers-parc.com</p></div></div>
+<h4 style="margin-bottom:8px">Transports & Accès</h4>
+<div class="transport-grid">
+<div class="transport-item"><strong>Tramway</strong>Ligne 3 — Arrêt Le Crès (5 min à pied)</div>
+<div class="transport-item"><strong>Bus</strong>Ligne 20 — Arrêt Route de Nîmes</div>
+<div class="transport-item"><strong>Parking</strong>40 places gratuites sur place + parking communal à 2 min</div>
+<div class="transport-item"><strong>PMR</strong>Accès fauteuil complet sur tout le site</div>
+</div>
+<div class="notice">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D3436" stroke-width="2.5"><path d="M4 2h12v10l2 4a3 3 0 01-3 3H9a3 3 0 01-3-3V2z"/></svg>
+Chaussettes antidérapantes obligatoires dans les structures !
+</div>
+</div>
+<div>
+<div class="map-frame">
+<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=3.940%2C43.630%2C3.960%2C43.645&layer=mapnik&marker=43.6375%2C3.950" loading="lazy"></iframe>
+</div>
+</div>
+</div>
+</section>
+
+<div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--text)" d="M0,30 C360,60 720,0 1080,30 C1260,50 1380,10 1440,30 L1440,0 L0,0Z"/></svg></div>
+
+<footer>
+<div style="margin-bottom:16px"><a href="#" class="logo" style="font-size:1.8rem;color:#fff">Mini<span>vers</span></a></div>
+<p>Parc Indoor & Boutique de Jeux — Le Crès, Montpellier</p>
+<div class="flink">
+<a href="#">Accueil</a><a href="#">Tarifs</a><a href="#">Boutique</a><a href="#">Anniversaires</a><a href="#">Mentions légales</a>
+</div>
+<div class="nl"><input placeholder="Votre email..." type="email"><button>Newsletter</button></div>
+<p style="margin-top:28px;font-size:.78rem">&copy; 2026 Minivers — Tous droits réservés</p>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+<div class="cart-header"><h3>Votre réservation</h3><button class="cart-close" onclick="toggleCart()">&times;</button></div>
+<div class="cart-body" id="cartBody">
+<div class="cart-empty" id="cartEmpty">
+<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+<p>Votre panier est vide</p>
+</div>
+<div id="cartItems"></div>
+</div>
+<div class="cart-footer">
+<div class="cart-sock">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2D3436" stroke-width="2.5"><path d="M4 2h12v10l2 4a3 3 0 01-3 3H9a3 3 0 01-3-3V2z"/></svg>
+Rappel : chaussettes antidérapantes obligatoires !
+</div>
+<div class="cart-total"><span>Total</span><span id="cartTotal">0€</span></div>
+<button class="btn-val" onclick="validateCart()">Valider ma réservation</button>
+</div>
+</div>
+
+<script>
+let cart=[];
+function addToCart(name,price){
+  if(price===0){alert('Bientôt disponible en ligne !');return}
+  let existing=cart.find(i=>i.name===name);
+  if(existing){existing.qty++}else{cart.push({name,price,qty:1})}
+  renderCart();
+  let el=document.getElementById('cartCount');
+  el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');
+}
+function removeFromCart(idx){cart.splice(idx,1);renderCart()}
+function renderCart(){
+  let count=cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cartCount').textContent=count;
+  let itemsEl=document.getElementById('cartItems');
+  let emptyEl=document.getElementById('cartEmpty');
+  if(!cart.length){itemsEl.innerHTML='';emptyEl.style.display='block';document.getElementById('cartTotal').textContent='0€';return}
+  emptyEl.style.display='none';
+  let html='';let total=0;
+  cart.forEach((item,idx)=>{
+    let sub=item.price*item.qty;total+=sub;
+    html+=`<div class="cart-item"><div class="cart-item-info"><h4>${item.name}${item.qty>1?' x'+item.qty:''}</h4><p>${item.price}€ / unité</p></div><div class="cart-item-right"><span class="cart-item-price">${sub}€</span><button class="cart-item-rm" onclick="removeFromCart(${idx})">&times;</button></div></div>`;
+  });
+  itemsEl.innerHTML=html;
+  document.getElementById('cartTotal').textContent=total+'€';
+}
+function toggleCart(){
+  document.getElementById('cartOverlay').classList.toggle('open');
+  document.getElementById('cartDrawer').classList.toggle('open');
+}
+function validateCart(){
+  if(!cart.length){alert('Votre panier est vide !');return}
+  alert('Réservation validée ! Vous recevrez un email de confirmation.');
+  cart=[];renderCart();toggleCart();
+}
+</script>
+</body>
+</html>

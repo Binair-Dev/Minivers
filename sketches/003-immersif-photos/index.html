@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MINIVERS — Parc indoor immersif</title>
+<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Quicksand',system-ui,sans-serif;color:#1A1A2E;background:#FFFBF2;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.container{max-width:1200px;margin:0 auto;padding:0 40px}
+section{padding:120px 0}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 0;transition:all .3s}
+nav.scrolled{background:rgba(255,251,242,.95);backdrop-filter:blur(12px);box-shadow:0 2px 20px rgba(0,0,0,.08)}
+nav .container{display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:26px;font-weight:700;color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.3)}
+nav.scrolled .logo{color:#1A1A2E;text-shadow:none}
+.nav-links{display:flex;gap:28px;font-size:14px;font-weight:600;color:rgba(255,255,255,.8);text-shadow:0 1px 4px rgba(0,0,0,.2)}
+nav.scrolled .nav-links{color:#888;text-shadow:none}
+.nav-links a{transition:color .2s}.nav-links a:hover{color:#D4789C}
+.btn-cta{background:#D4789C;color:#fff;padding:12px 30px;border-radius:50px;font-weight:700;font-size:14px;border:none;cursor:pointer;transition:all .2s}
+.btn-cta:hover{background:#C0607E;transform:translateY(-2px);box-shadow:0 8px 20px rgba(212,120,156,.3)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#F5C6D0 0%,#E8B4C8 15%,#D4789C 30%,#7B5EA7 55%,#4A90B8 75%,#5BAF7A 90%,#D4A843 100%);z-index:0}
+.hero-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,rgba(0,0,0,.4) 0%,transparent 70%)}
+.hero-content{position:relative;z-index:1;max-width:800px;padding:0 20px}
+.hero h1{font-size:88px;font-weight:700;color:#fff;text-shadow:0 4px 40px rgba(0,0,0,.3);letter-spacing:6px;margin-bottom:20px}
+.hero p{font-size:22px;color:rgba(255,255,255,.9);text-shadow:0 2px 8px rgba(0,0,0,.2);margin-bottom:8px}
+.hero .sub{font-size:13px;color:rgba(255,255,255,.5);font-style:italic;margin-bottom:48px}
+.hero .btn-hero{background:rgba(255,255,255,.95);color:#7B5EA7;padding:20px 56px;border-radius:50px;font-size:18px;font-weight:700;border:none;cursor:pointer;box-shadow:0 8px 40px rgba(0,0,0,.2);transition:all .3s}
+.hero .btn-hero:hover{transform:scale(1.06);background:#fff}
+
+/* PHOTO PLACEHOLDERS */
+.photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.photo-placeholder .overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.5) 100%)}
+.photo-placeholder .label{position:relative;z-index:1;color:#fff;font-size:14px;font-weight:600;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+
+/* SECTION TITLES */
+.section-title{text-align:center;margin-bottom:64px}
+.section-title h2{font-size:40px;font-weight:700;margin-bottom:10px}
+.section-title p{font-size:17px;color:#999;max-width:560px;margin:0 auto}
+.section-title .accent{width:60px;height:4px;border-radius:2px;margin:20px auto 0;background:linear-gradient(90deg,#D4789C,#7B5EA7)}
+
+/* ACTIVITIES */
+.activities{background:#FFFBF2}
+.act-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:24px}
+.act-card{border-radius:20px;overflow:hidden;position:relative;height:260px;cursor:pointer;transition:transform .3s}
+.act-card:hover{transform:scale(1.03)}
+.act-card .photo-placeholder{position:absolute;inset:0}
+.act-card .info{position:absolute;bottom:0;left:0;right:0;padding:28px;z-index:2;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff}
+.act-card .info h3{font-size:20px;font-weight:700;margin-bottom:4px;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+.act-card .info p{font-size:14px;opacity:.85}
+.act-card .info .badge{display:inline-block;background:rgba(255,255,255,.2);backdrop-filter:blur(4px);padding:3px 12px;border-radius:20px;font-size:12px;margin-top:6px}
+.act-c1{background:linear-gradient(135deg,#FFDDE4,#D4789C)}.act-c2{background:linear-gradient(135deg,#E8D5F0,#7B5EA7)}.act-c3{background:linear-gradient(135deg,#B8D8E8,#4A90B8)}
+.act-c4{background:linear-gradient(135deg,#C8E8D5,#5BAF7A)}.act-c5{background:linear-gradient(135deg,#F5E6C0,#D4A843)}.act-c6{background:linear-gradient(135deg,#F0D0E0,#9B6B8A)}.act-c7{background:linear-gradient(135deg,#D0C8E8,#6B5EA7)}
+
+/* ROLE PLAY */
+.roleplay{background:#F5F0FF}
+.rp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+.rp-card{border-radius:20px;overflow:hidden;position:relative;height:300px;cursor:pointer;transition:transform .3s}
+.rp-card:hover{transform:translateY(-6px)}
+.rp-inner{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;color:#fff}
+.rp-inner .rpi{font-size:52px;margin-bottom:14px;filter:drop-shadow(0 4px 12px rgba(0,0,0,.2))}
+.rp-inner h3{font-size:20px;font-weight:700;margin-bottom:16px;text-shadow:0 2px 8px rgba(0,0,0,.2)}
+.rp-tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.rp-tags span{background:rgba(255,255,255,.2);backdrop-filter:blur(4px);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
+.rp-chantier{background:linear-gradient(135deg,#FFB347,#FF6B35)}.rp-police{background:linear-gradient(135deg,#64B5F6,#1565C0)}.rp-pompier{background:linear-gradient(135deg,#EF5350,#B71C1C)}
+.rp-relooking{background:linear-gradient(135deg,#CE93D8,#6A1B9A)}.rp-epicerie{background:linear-gradient(135deg,#81C784,#2E7D32)}.rp-medecin{background:linear-gradient(135deg,#4DD0E1,#006064)}
+.rp-garage{background:linear-gradient(135deg,#FFB74D,#E65100)}
+
+/* CATEGORIES */
+.categories{background:#FFFBF2}
+.cat-grid{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-bottom:36px}
+.cat-item{padding:14px 28px;border-radius:16px;font-size:16px;font-weight:700;background:#fff;border:2px solid #eee;cursor:pointer;transition:all .25s}
+.cat-item:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(0,0,0,.06)}
+.cat-note{text-align:center;max-width:660px;margin:0 auto;color:#999;font-size:14px;line-height:1.7;background:#fff;padding:20px 28px;border-radius:16px;border:1px solid #f0ece3}
+
+/* TARIFS */
+.tarifs{background:#1A1A2E;color:#fff;text-align:center}
+.tarifs .section-title h2{color:#fff}
+.tarifs .section-title p{color:rgba(255,255,255,.5)}
+.tarif-row{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
+.tarif-card{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:40px 32px;min-width:180px;backdrop-filter:blur(4px);transition:all .3s}
+.tarif-card:hover{background:rgba(255,255,255,.14);transform:translateY(-4px)}
+.tarif-card .lbl{font-size:12px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.tarif-card h3{font-size:17px;font-weight:600;margin-bottom:16px}
+.tarif-card .price{font-size:42px;font-weight:700;color:#D4789C}
+.tarif-card.free .price{color:#5BAF7A}
+.pass-card{background:linear-gradient(135deg,#D4789C,#7B5EA7);border-radius:20px;padding:50px;max-width:540px;margin:0 auto}
+.pass-card h3{font-size:24px;margin-bottom:8px}
+.pass-card .big{font-size:56px;font-weight:700}
+.pass-card p{opacity:.85;margin-top:10px;font-size:15px}
+
+/* ANNIVERSAIRES */
+.anniversaires{background:linear-gradient(135deg,#FFF0F5,#F5F0FF);text-align:center}
+.anni-wrap{max-width:640px;margin:0 auto}
+.anni-wrap h2{font-size:40px;margin-bottom:16px;color:#7B5EA7}
+.anni-wrap p{color:#888;font-size:17px;margin-bottom:32px}
+
+/* EVENEMENTS */
+.evenements{background:#FFFBF2}
+.evt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.evt-card{border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.06);transition:transform .3s}
+.evt-card:hover{transform:translateY(-4px)}
+.evt-head{height:180px;display:flex;align-items:center;justify-content:center;font-size:44px}
+.evt-head.a{background:linear-gradient(135deg,#FFDDE4,#D4789C)}.evt-head.b{background:linear-gradient(135deg,#C8E8D5,#5BAF7A)}.evt-head.c{background:linear-gradient(135deg,#D0C8E8,#7B5EA7)}
+.evt-body{background:#fff;padding:24px}
+.evt-body .date{font-size:12px;color:#D4789C;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.evt-body h3{font-size:18px;font-weight:700;margin-bottom:6px}
+.evt-body p{color:#999;font-size:13px}
+
+/* BOUTIQUE */
+.boutique{background:linear-gradient(135deg,#FFF5E6,#FFFBF2);text-align:center}
+.bout-wrap{max-width:580px;margin:0 auto}
+.bout-wrap h2{font-size:40px;margin:12px 0}
+.bout-wrap p{color:#999;font-size:16px;margin-bottom:28px}
+.filt-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:24px}
+.filt-row span{background:#fff;padding:8px 18px;border-radius:14px;font-size:13px;font-weight:600;color:#888;border:1px solid #f0ece3}
+
+/* INFOS */
+.infos{background:#FFFBF2}
+.sock{background:linear-gradient(135deg,#FFF3E0,#FFECB3);border-radius:16px;padding:28px;text-align:center;margin-bottom:48px;border:2px solid #FFB74D}
+.sock h3{color:#E65100;font-size:18px;font-weight:700;margin-bottom:4px}
+.sock p{color:#BF360C;font-size:14px}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.info-card{background:#fff;border-radius:20px;padding:36px;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.info-card .ii{font-size:36px;margin-bottom:14px;display:block}
+.info-card h3{font-size:18px;font-weight:700;margin-bottom:12px}
+.info-card p{color:#888;font-size:14px;line-height:1.7}
+
+/* CONTACT */
+.contact{background:#fff}
+.ct-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px}
+.ct-left h3{font-size:20px;font-weight:700;margin-bottom:14px}
+.ct-left p{color:#888;font-size:15px;margin-bottom:6px}
+.socials{display:flex;gap:12px;margin-top:20px}
+.socials a{display:flex;align-items:center;padding:10px 20px;border-radius:14px;background:#FFFBF2;border:1px solid #f0ece3;font-weight:600;font-size:14px;transition:all .2s;color:#888}
+.socials a:hover{border-color:#D4789C;color:#D4789C}
+.ct-form input,.ct-form textarea{width:100%;padding:16px 20px;border-radius:14px;border:1px solid #eee;font-family:'Quicksand',sans-serif;font-size:15px;margin-bottom:14px;background:#FFFBF2;transition:border .2s}
+.ct-form input:focus,.ct-form textarea:focus{outline:none;border-color:#D4789C}
+.ct-form textarea{min-height:120px;resize:vertical}
+
+/* FOOTER */
+footer{background:#1A1A2E;color:#fff;padding:60px 0 28px;text-align:center}
+footer .logo{font-size:30px;font-weight:700;margin-bottom:14px}
+footer p{opacity:.5;font-size:13px;margin-bottom:6px}
+footer .fl{display:flex;gap:20px;justify-content:center;margin:18px 0;flex-wrap:wrap}
+footer .fl a{opacity:.6;font-size:13px;transition:opacity .2s}
+footer .fl a:hover{opacity:1}
+.nl{max-width:400px;margin:24px auto 0;display:flex;gap:8px}
+.nl input{flex:1;padding:12px 18px;border-radius:14px;border:none;font-family:'Quicksand',sans-serif;font-size:14px}
+.nl button{padding:12px 22px;border-radius:14px;border:none;background:linear-gradient(135deg,#D4789C,#7B5EA7);color:#fff;font-family:'Quicksand',sans-serif;font-weight:700;cursor:pointer;font-size:14px}
+
+@media(max-width:768px){
+.hero h1{font-size:52px}
+.info-grid{grid-template-columns:1fr}
+.ct-grid{grid-template-columns:1fr}
+.container{padding:0 20px}
+section{padding:80px 0}
+}
+</style>
+</head>
+<body>
+
+<nav id="mainNav">
+<div class="container">
+<a href="#" class="logo">MINIVERS</a>
+<div class="nav-links">
+<a href="#activites">Activités</a>
+<a href="#jeux-role">Jeux de rôle</a>
+<a href="#tarifs">Tarifs</a>
+<a href="#boutique">Boutique</a>
+<a href="#infos">Infos</a>
+<button class="btn-cta">Réserver</button>
+</div>
+</div>
+</nav>
+
+<section class="hero">
+<div class="hero-bg"></div>
+<div class="hero-content">
+<h1>MINIVERS</h1>
+<p>Le parc d'activités indoor pour les 0-12 ans</p>
+<p class="sub">📷 Votre vidéo / photo ici</p>
+<button class="btn-hero">🎟 Réserver un créneau</button>
+</div>
+</section>
+
+<section class="activities" id="activites">
+<div class="container">
+<div class="section-title">
+<h2>Nos espaces</h2>
+<p>7 zones pour l'éveil, le jeu et l'émerveillement</p>
+<div class="accent"></div>
+</div>
+<div class="act-grid">
+<div class="act-card act-c1"><div class="info"><h3>👶 Tout-petits</h3><p>Espace 0-3 ans sécurisé</p></div></div>
+<div class="act-card act-c2"><div class="info"><h3>🏰 Grande structure</h3><p>Parcours multi-niveaux</p></div></div>
+<div class="act-card act-c3"><div class="info"><h3>🛝 Toboggan</h3><p>Glissades pour tous</p></div></div>
+<div class="act-card act-c4"><div class="info"><h3>🎮 Jeux immersifs</h3><p>Expériences interactives</p></div></div>
+<div class="act-card act-c5"><div class="info"><h3>🏖️ Bac à sable</h3><p>Sable couvert et ludique</p><span class="badge">+ 4 €</span></div></div>
+<div class="act-card act-c6"><div class="info"><h3>🍿 Snack</h3><p>En-cas et douceurs</p></div></div>
+<div class="act-card act-c7"><div class="info"><h3>🗺️ Espace interactif</h3><p>Maquette visuelle immersive</p></div></div>
+</div>
+</div>
+</section>
+
+<section class="roleplay" id="jeux-role">
+<div class="container">
+<div class="section-title">
+<h2>Jeux de rôle</h2>
+<p>7 univers où chaque enfant devient le héros de son histoire</p>
+<div class="accent"></div>
+</div>
+<div class="rp-grid">
+<div class="rp-card"><div class="rp-inner rp-chantier"><span class="rpi">🏗️</span><h3>Chantier</h3><div class="rp-tags"><span>Déguisements</span><span>Accessoires</span><span>Véhicules</span></div></div></div>
+<div class="rp-card"><div class="rp-inner rp-police"><span class="rpi">👮</span><h3>Police</h3><div class="rp-tags"><span>Déguisements</span><span>Accessoires</span><span>Véhicules</span></div></div></div>
+<div class="rp-card"><div class="rp-inner rp-pompier"><span class="rpi">🚒</span><h3>Pompier</h3><div class="rp-tags"><span>Déguisements</span><span>Accessoires</span><span>Véhicules</span></div></div></div>
+<div class="rp-card"><div class="rp-inner rp-relooking"><span class="rpi">💇</span><h3>Relooking</h3><div class="rp-tags"><span>Déguisements</span><span>Accessoires</span><span>Barber</span><span>Coiffeur</span></div></div></div>
+<div class="rp-card"><div class="rp-inner rp-epicerie"><span class="rpi">🏪</span><h3>Épicerie / Boulangerie / Fleuriste</h3><div class="rp-tags"><span>Aliments</span><span>Électroménager</span><span>Accessoires</span></div></div></div>
+<div class="rp-card"><div class="rp-inner rp-medecin"><span class="rpi">🏥</span><h3>Médecin</h3><div class="rp-tags"><span>Déguisements</span><span>Accessoires</span><span>Peluche</span></div></div></div>
+<div class="rp-card"><div class="rp-inner rp-garage"><span class="rpi">🔧</span><h3>Garage</h3><div class="rp-tags"><span>Déguisements</span><span>Accessoires</span><span>Véhicules</span></div></div></div>
+</div>
+</div>
+</section>
+
+<section class="categories">
+<div class="container">
+<div class="section-title">
+<h2>5 compétences développées</h2>
+<p>Chaque activité et jouet peut stimuler plusieurs compétences</p>
+<div class="accent"></div>
+</div>
+<div class="cat-grid">
+<div class="cat-item">🌱 Éveil</div>
+<div class="cat-item">🏃 Motricité</div>
+<div class="cat-item">🧩 Réflexion & logique</div>
+<div class="cat-item">🎨 Créativité</div>
+<div class="cat-item">🎭 Jeux d'imitation</div>
+</div>
+<div class="cat-note">
+💡 Un jouet peut appartenir à plusieurs catégories : par exemple « 2-4 ans + Éveil + Épicerie (aliments) ». Cliquez sur une thématique pour voir tous les jouets, tous âges confondus.
+</div>
+</div>
+</section>
+
+<section class="tarifs" id="tarifs">
+<div class="container">
+<div class="section-title">
+<h2>Tarifs — Créneau 2h</h2>
+<p>Accès illimité à toutes les zones</p>
+<div class="accent" style="background:linear-gradient(90deg,#D4789C,#5BAF7A)"></div>
+</div>
+<div class="tarif-row">
+<div class="tarif-card"><div class="lbl">Accompagnant</div><h3>+ 13 ans</h3><div class="price">3 €</div></div>
+<div class="tarif-card"><div class="lbl">Enfant</div><h3>2 – 12 ans</h3><div class="price">15 €</div></div>
+<div class="tarif-card"><div class="lbl">Bébé</div><h3>7 – 23 mois</h3><div class="price">9 €</div></div>
+<div class="tarif-card free"><div class="lbl">Bébé</div><h3>0 – 6 mois</h3><div class="price">Gratuit</div></div>
+</div>
+<div class="pass-card">
+<h3>🎟 Pass 10</h3>
+<div class="big">180 €</div>
+<p>12 entrées (10 + 2 offertes) + 1 boisson chaude par accompagnant</p>
+</div>
+</div>
+</section>
+
+<section class="anniversaires">
+<div class="container">
+<div class="anni-wrap">
+<div style="font-size:52px;margin-bottom:24px">🎂🎈🎁🧁</div>
+<h2>Anniversaires magiques</h2>
+<p>Thème personnalisé, gâteau, accessoires… Un moment inoubliable clé en main.</p>
+<button class="btn-cta" style="font-size:17px;padding:16px 40px">Organiser un anniversaire</button>
+</div>
+</div>
+</section>
+
+<section class="evenements">
+<div class="container">
+<div class="section-title">
+<h2>Événements à venir</h2>
+<p>Ateliers, booms et activités spéciales</p>
+<div class="accent"></div>
+</div>
+<div class="evt-grid">
+<div class="evt-card"><div class="evt-head a">🎨</div><div class="evt-body"><div class="date">📅 21 Juin</div><h3>Atelier Créatif</h3><p>Peinture, bricolage et création</p></div></div>
+<div class="evt-card"><div class="evt-head b">💃</div><div class="evt-body"><div class="date">📅 27 Juin</div><h3>Mini Boom</h3><p>Danse et karaoké géant</p></div></div>
+<div class="evt-card"><div class="evt-head c">🧪</div><div class="evt-body"><div class="date">📅 2 Juillet</div><h3>Atelier Sciences</h3><p>Expériences amusantes et découvertes</p></div></div>
+</div>
+</div>
+</section>
+
+<section class="boutique">
+<div class="container">
+<div class="bout-wrap">
+<div class="section-title" style="margin-bottom:20px">
+<h2>La boutique Minivers</h2>
+<p>Jouets, jeux éducatifs et cadeaux</p>
+<div class="accent"></div>
+</div>
+<p>Filtrage intelligent par thématique, âge et compétence développée.</p>
+<button class="btn-cta" style="margin-top:20px;padding:14px 32px">🛒 Découvrir la boutique</button>
+<div class="filt-row">
+<span>Par thématique</span><span>Par âge</span><span>🌱 Éveil</span><span>🏃 Motricité</span><span>🧩 Réflexion</span><span>🎨 Créativité</span><span>🎭 Imitation</span>
+</div>
+</div>
+</div>
+</section>
+
+<section class="infos" id="infos">
+<div class="container">
+<div class="section-title">
+<h2>Infos pratiques</h2>
+<p>910 Route de Nîmes, 34920 Le Crès</p>
+<div class="accent"></div>
+</div>
+<div class="sock">
+<h3>🧦 Chaussettes antidérapantes obligatoires</h3>
+<p>Pensez à vos chaussettes antidérapantes pour tous les participants !</p>
+</div>
+<div class="info-grid">
+<div class="info-card"><span class="ii">🚗</span><h3>En voiture</h3><p>RN113 est de Montpellier. Grand parking gratuit. ⚠️ Embouteillages zone de Trifontaine le samedi et heures de pointe.</p></div>
+<div class="info-card"><span class="ii">🚊</span><h3>En tram</h3><p>Ligne 2 direction Jacou. Descendre à Via Domitia ou Notre-Dame de Sablassou, puis bus ou à pied (~2 km).</p></div>
+<div class="info-card"><span class="ii">🚌</span><h3>En bus</h3><p>Lignes 21, 22, 30, 31, 35, 46. Arrêt à proximité directe du parc.</p></div>
+</div>
+</div>
+</section>
+
+<section class="contact">
+<div class="container">
+<div class="section-title">
+<h2>Contactez-nous</h2>
+<p>Une question ? On est là !</p>
+<div class="accent"></div>
+</div>
+<div class="ct-grid">
+<div class="ct-left">
+<h3>📍 Minivers</h3>
+<p>910 Route de Nîmes</p>
+<p>34920 Le Crès</p>
+<p style="margin-top:16px">📧 contact@minivers.fr</p>
+<p>📞 04 XX XX XX XX</p>
+<div class="socials"><a href="#">📷 Instagram</a><a href="#">🎵 TikTok</a></div>
+</div>
+<div class="ct-form">
+<input type="text" placeholder="Votre nom">
+<input type="email" placeholder="Votre email">
+<input type="text" placeholder="Sujet">
+<textarea placeholder="Votre message…"></textarea>
+<button class="btn-cta" style="width:100%;font-size:15px;padding:16px">Envoyer le message</button>
+</div>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="container">
+<div class="logo">MINIVERS</div>
+<p>Parc d'activités indoor — 0-12 ans</p>
+<div class="fl">
+<a href="#activites">Activités</a><a href="#tarifs">Tarifs</a><a href="#boutique">Boutique</a><a href="#infos">Infos</a><a href="#contact">Contact</a>
+</div>
+<div class="nl"><input type="email" placeholder="Votre email"><button>S'inscrire</button></div>
+<p style="margin-top:24px;font-size:11px">© 2026 Minivers — Tous droits réservés</p>
+</div>
+</footer>
+
+<script>
+window.addEventListener('scroll',()=>{const n=document.getElementById('mainNav');n.classList.toggle('scrolled',window.scrollY>80)})
+</script>
+</body>
+</html>
