@@ -46,10 +46,11 @@ nav a:hover{color:var(--rose)}
 .sock-hero{margin-top:24px;background:rgba(255,255,255,.2);backdrop-filter:blur(6px);border-radius:50px;padding:10px 24px;display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:.9rem}
 
 /* CARROUSEL IMAGES */
-.carousel{width:100%;max-width:100%;margin:-50px auto 0;padding:0 48px;position:relative;z-index:2}
-.carousel-track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:20px 0;-webkit-overflow-scrolling:touch}
+.carousel{width:100%;max-width:1400px;margin:-190px auto 0;padding:20px 48px 0 48px;position:relative;z-index:2;overflow:visible}
+.carousel-track{display:flex;gap:16px;overflow-x:hidden;scroll-snap-type:x mandatory;padding:20px 0;-webkit-overflow-scrolling:touch;scrollbar-width:none}
 .carousel-track::-webkit-scrollbar{height:4px}.carousel-track::-webkit-scrollbar-thumb{background:var(--jaune);border-radius:2px}
-.carousel-card{flex:0 0 360px;height:220px;border-radius:var(--r);scroll-snap-align:start;display:flex;align-items:flex-end;padding:20px;position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.15)}
+.carousel-track::-webkit-scrollbar{display:none}
+.carousel-card{flex:0 0 310px;height:210px;border-radius:var(--r);scroll-snap-align:start;display:flex;align-items:flex-end;padding:18px;position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.15)}
 .carousel-card::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.5),transparent 60%)}
 .carousel-card span{position:relative;z-index:1;color:#fff;font-family:var(--fh);font-weight:700;font-size:1.05rem}
 .cc1{background:linear-gradient(135deg,#FFB6C1,var(--rose))}.cc2{background:linear-gradient(135deg,#87CEEB,var(--bleu))}
