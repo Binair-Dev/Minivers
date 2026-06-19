@@ -17,6 +17,9 @@ nav{position:fixed;top:0;width:100%;z-index:100;background:rgba(255,255,255,.93)
 nav ul{list-style:none;display:flex;gap:20px}
 nav a{text-decoration:none;color:var(--text);font-weight:600;font-size:.9rem;transition:color .3s}
 nav a:hover{color:var(--rose)}
+.nav-fav-btn{background:none;border:none;font-weight:600;font-size:.9rem;transition:color .3s;padding:0;cursor:pointer;color:var(--text)}
+.nav-fav-btn:hover{color:var(--rose)}
+.nav-fav-btn.active{color:var(--rose)}
 .nav-right{display:flex;align-items:center;gap:12px}
 .btn-cart{position:relative;background:none;border:2px solid var(--turquoise);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;transition:all .3s;color:var(--turquoise)}
 .btn-cart:hover{background:var(--turquoise);color:#fff}
@@ -118,9 +121,10 @@ footer .flink a:hover{opacity:1}
 <nav>
 <a href="#top" class="logo">Mini<span>vers</span> <span style="color:var(--violet);font-size:1rem;font-weight:700">Boutique</span></a>
 <ul>
-<li><a href="#filters" style="color:var(--violet)">Catégories</a></li>
+<li><a href="#filters">Catégories</a></li>
 <li><a href="#promo">Promotions</a></li>
 <li><a href="#contact-boutique">Contact</a></li>
+<li><button class="nav-fav-btn" id="navFavBtn">Favoris</button></li>
 </ul>
 <div class="nav-right">
 <button class="btn-cart" onclick="toggleCart()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg><span class="cart-count" id="cartCount">0</span></button>
@@ -147,7 +151,7 @@ footer .flink a:hover{opacity:1}
 <button class="filter-chip" data-cat="construction">Construction <span class="chip-count">(3)</span></button>
 <button class="filter-chip" data-cat="creatif">Créatif <span class="chip-count">(3)</span></button>
 <button class="filter-chip" data-cat="moteur">Motricité <span class="chip-count">(3)</span></button>
-<button class="filter-chip" data-cat="favorites">❤️ Favoris <span class="chip-count">(0)</span></button>
+
 </div>
 
 <div class="shop-promo" id="promo">
@@ -344,10 +348,10 @@ function renderCart(){
   var html='';var total=0;
   cart.forEach(function(item,idx){
     var sub=item.price*item.qty;total+=sub;
-    html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:12px;background:var(--bg);margin-bottom:8px"><div><h4 style="font-size:.92rem;margin-bottom:2px">'+item.name+(item.qty>1?' x'+item.qty:'')+'</h4><p style="font-size:.78rem;color:#636E72">'+item.price.toFixed(2).replace('.',',')+'€ / unité</p></div><div style="display:flex;align-items:center;gap:6px"><span style="font-weight:700;font-family:var(--fh);color:var(--rose)">'+sub.toFixed(2).replace('.',',')+'€</span><button style="background:none;border:none;color:#bbb;font-size:1.1rem" onclick="removeFromCart('+idx+')">&times;</button></div></div>';
+    html+='<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:12px;background:var(--bg);margin-bottom:8px"><div><h4 style="font-size:.92rem;margin-bottom:2px">'+item.name+(item.qty>1?' x'+item.qty:'')+'</h4><p style="font-size:.78rem;color:#636E72">'+item.price.toFixed(2).replace('.','(',')','')+'€ / unité</p></div><div style="display:flex;align-items:center;gap:6px"><span style="font-weight:700;font-family:var(--fh);color:var(--rose)">'+sub.toFixed(2).replace('.','(',')','')+'€</span><button style="background:none;border:none;color:#bbb;font-size:1.1rem" onclick="removeFromCart('+idx+')">&times;</button></div></div>';
   });
   itemsEl.innerHTML=html;
-  document.getElementById('cartTotal').textContent=total.toFixed(2).replace('.',',')+'€';
+  document.getElementById('cartTotal').textContent=total.toFixed(2).replace('.','(',')','')+'€';
 }
 function toggleCart(){
   var overlay=document.getElementById('cartOverlay'),drawer=document.getElementById('cartDrawer');
@@ -369,23 +373,24 @@ function toggleLike(btn){
   else{likedProducts.splice(index,1);btn.classList.remove('liked')}
   localStorage.setItem('minivers_likes',JSON.stringify(likedProducts));
   updateFavoritesCount();
-  var activeChip=document.querySelector('.filter-chip.active');
-  if(activeChip&&activeChip.dataset.cat==='favorites'){filterProducts('favorites')}
+  var favBtn=document.getElementById('navFavBtn');
+  if(favBtn&&favBtn.classList.contains('active')){favBtn.click()}
 }
 
 function updateFavoritesCount(){
-  var el=document.querySelector('[data-cat="favorites"] .chip-count');
-  if(el){el.textContent='('+likedProducts.length+')'}
+  // no chip count needed anymore
 }
 
 function filterProducts(cat){
   var products=document.querySelectorAll('.product');
+  var favBtn=document.getElementById('navFavBtn');
   for(var i=0;i<products.length;i++){
     var p=products[i];var name=p.dataset.name;
     if(cat==='all'){p.style.display='flex'}
     else if(cat==='favorites'){p.style.display=likedProducts.includes(name)?'flex':'none'}
     else{p.style.display=p.dataset.cat===cat?'flex':'none'}
   }
+  if(favBtn&&cat!=='favorites'){favBtn.classList.remove('active')}
 }
 
 var searchInput=document.getElementById('searchInput');
@@ -438,12 +443,31 @@ if(grid){
   });
 }
 
+// Favoris button in navbar — uses click event, no href, no scroll
 document.addEventListener('DOMContentLoaded',function(){
+  var favBtn=document.getElementById('navFavBtn');
+  var favState=false;
+  favBtn.addEventListener('click',function(){
+    var products=document.querySelectorAll('.product');
+    if(favState){
+      // Toggle OFF: show all
+      favState=false;
+      favBtn.classList.remove('active');
+      for(var i=0;i<products.length;i++){products[i].style.display='flex'}
+      if(searchInput){searchInput.value=''}
+    } else {
+      // Toggle ON: show only favorites
+      favState=true;
+      favBtn.classList.add('active');
+      for(var i=0;i<products.length;i++){
+        products[i].style.display=likedProducts.includes(products[i].dataset.name)?'flex':'none';
+      }
+    }
+  });
   for(var i=0;i<likedProducts.length;i++){
     var btn=document.querySelector('button[data-name="'+likedProducts[i]+'"]');
     if(btn){btn.classList.add('liked')}
   }
-  updateFavoritesCount();
 });
 </script>
 </body>
