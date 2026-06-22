@@ -374,7 +374,12 @@ function toggleLike(btn){
   localStorage.setItem('minivers_likes',JSON.stringify(likedProducts));
   updateFavoritesCount();
   var favBtn=document.getElementById('navFavBtn');
-  if(favBtn&&favBtn.classList.contains('active')){favBtn.click()}
+  if(favBtn&&favBtn.classList.contains('active')){
+    var products=document.querySelectorAll('.product');
+    for(var i=0;i<products.length;i++){
+      products[i].style.display=likedProducts.includes(products[i].dataset.name)?'flex':'none';
+    }
+  }
 }
 
 function updateFavoritesCount(){
