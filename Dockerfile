@@ -53,6 +53,8 @@ COPY --from=builder /opt/venv /opt/venv
 # Copy the project. .dockerignore keeps junk out of the build context.
 COPY --chown=app:app . /app
 
+RUN chmod +x /app/entrypoint.sh
+
 USER app
 
 EXPOSE 8000
