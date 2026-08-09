@@ -61,7 +61,8 @@ Voir [`.env.example`](.env.example) pour la liste complète. Les principales :
 | Variable | Rôle | Défaut |
 |---|---|---|
 | `APP_PORT` | Port hôte sur lequel l'app est exposée | `8000` |
-| `DB_PORT` | Port hôte pour Postgres | `5432` |
+| `DB_HOST_PORT` | Port hôte pour Postgres (clients psql/GUI) | `5432` |
+| `DB_PORT` | Port auquel **l'app** se connecte (5432 dans le réseau compose) | `5432` |
 | `DB_ENGINE` | `postgres` ou `sqlite` | `postgres` dans Docker, `sqlite` sinon |
 | `DB_HOST` | Hôte de la DB (service compose ou IP) | `db` |
 | `DJANGO_DEBUG` | Active le mode debug | `true` |

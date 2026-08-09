@@ -18,9 +18,10 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
     ports:
-      # Exposed only so you can connect from a local client (psql, GUI).
+      # HOST port only, for local clients (psql, GUI). Inside the compose
+      # network Postgres always listens on 5432 — that's what DB_PORT is for.
       # Comment this block if you don't want Postgres reachable from the host.
-      - "${DB_PORT}:5432"
+      - "${DB_HOST_PORT:-5432}:5432"
     healthcheck:
       # pg_isready is shipped with the postgres image; exit 0 means "accepting connections".
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
@@ -46,10 +47,11 @@ services:
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASSWORD: ${DB_PASSWORD}
-      DB_HOST: ${DB_HOST}
-      DB_PORT: ${DB_PORT}
+      DB_HOST: ${DB_HOST:-db}
+      # Port INSIDE the compose network, not the host mapping (see DB_HOST_PORT).
+      DB_PORT: ${DB_PORT:-5432}
     ports:
-      - "${APP_PORT}:8000"
+      - "${APP_PORT:-8000}:8000"
     # `runserver` auto-reloads on file changes — bind-mount the source for a
     # tight dev loop. Remove these two lines for a production-like run.
     volumes:
