@@ -50,14 +50,20 @@ WORKDIR /app
 # Copy the venv from the builder
 COPY --from=builder /opt/venv /opt/venv
 
+# The entrypoint lives OUTSIDE /app on purpose: docker-compose bind-mounts the
+# host directory over /app at runtime, which would shadow the copy baked into
+# the image (and with it, its executable bit).
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 # Copy the project. .dockerignore keeps junk out of the build context.
 COPY --chown=app:app . /app
-
-RUN chmod +x /app/entrypoint.sh
 
 USER app
 
 EXPOSE 8000
 
-ENTRYPOINT ["dumb-init", "--", "/app/entrypoint.sh"]
+# Invoked through `bash` rather than executed directly, so the script only ever
+# needs read permission — the host's exec bit becomes irrelevant.
+ENTRYPOINT ["dumb-init", "--", "bash", "/usr/local/bin/entrypoint.sh"]
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
