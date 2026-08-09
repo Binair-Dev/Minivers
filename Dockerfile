@@ -56,6 +56,11 @@ COPY --from=builder /opt/venv /opt/venv
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+# Writable dirs for collectstatic / uploads. They sit outside /app because the
+# bind-mount there belongs to the host user, whose uid need not match `app`.
+RUN mkdir -p /var/www/static /var/www/media \
+ && chown -R app:app /var/www
+
 # Copy the project. .dockerignore keeps junk out of the build context.
 COPY --chown=app:app . /app
 

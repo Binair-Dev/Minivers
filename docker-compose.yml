@@ -42,6 +42,10 @@ services:
       DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
       DJANGO_DEBUG: ${DJANGO_DEBUG}
       DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
+      # Outside /app: collectstatic and uploads must not write into the
+      # bind-mounted source tree, which the container user cannot own.
+      STATIC_ROOT: /var/www/static
+      MEDIA_ROOT: /var/www/media
       # Database
       DB_ENGINE: ${DB_ENGINE}
       DB_NAME: ${DB_NAME}
@@ -58,6 +62,8 @@ services:
       - .:/app
       # Avoid clobbering the venv inside the container when we bind-mount /app
       - /app/__pycache__
+      - static_data:/var/www/static
+      - media_data:/var/www/media
     command:
       - python
       - manage.py
@@ -66,3 +72,5 @@ services:
 
 volumes:
   pg_data:
+  static_data:
+  media_data:

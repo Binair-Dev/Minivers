@@ -41,6 +41,20 @@ def env_int(key: str, default: int) -> int:
         return default
 
 
+def env_path(key: str, default: Path) -> Path:
+    """Resolve a path environment variable.
+
+    Absolute values are used as-is; relative ones are anchored to ``BASE_DIR``.
+    Absolute paths matter under Docker, where writable directories live outside
+    the bind-mounted source tree.
+    """
+    raw = os.environ.get(key)
+    if not raw:
+        return default
+    candidate = Path(raw)
+    return candidate if candidate.is_absolute() else BASE_DIR / candidate
+
+
 # --- Core --------------------------------------------------------------------
 
 SECRET_KEY = env("DJANGO_SECRET_KEY", "django-insecure-dev-key-change-me")
@@ -137,9 +151,9 @@ USE_TZ = True
 
 STATIC_URL = env("STATIC_URL", "static/")
 STATICFILES_DIRS = [BASE_DIR / "static"]
-STATIC_ROOT = BASE_DIR / env("STATIC_ROOT", "staticfiles")
+STATIC_ROOT = env_path("STATIC_ROOT", BASE_DIR / "staticfiles")
 
 MEDIA_URL = env("MEDIA_URL", "media/")
-MEDIA_ROOT = BASE_DIR / env("MEDIA_ROOT", "media")
+MEDIA_ROOT = env_path("MEDIA_ROOT", BASE_DIR / "media")
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

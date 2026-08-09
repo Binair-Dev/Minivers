@@ -36,8 +36,11 @@ if [[ "${DJANGO_MIGRATE_ON_START:-true}" == "true" ]]; then
 fi
 
 # ---- 3. Static files ----------------------------------------------------------
+# Compared lowercased: settings.py accepts true/1/yes/on in any case, so the
+# shell must agree with it rather than matching Python's "True" spelling only.
+debug_flag="$(printf '%s' "${DJANGO_DEBUG:-true}" | tr '[:upper:]' '[:lower:]')"
 if [[ "${DJANGO_COLLECTSTATIC_ON_START:-true}" == "true" \
-   && "${DJANGO_DEBUG:-True}" != "True" ]]; then
+   && ! "${debug_flag}" =~ ^(1|true|yes|on)$ ]]; then
   echo "[entrypoint] Collecting static files..."
   python manage.py collectstatic --noinput
 fi
