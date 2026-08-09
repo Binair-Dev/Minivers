@@ -1,0 +1,49 @@
+# Anything that shouldn't end up in the build context or the final image.
+
+# Git + tooling internals
+.git/
+.gitignore
+.dockerignore
+.vscode/
+.idea/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Virtual env
+venv/
+.venv/
+env/
+
+# Django runtime artefacts
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+media/
+
+# Local sketches (legacy mock iteration files — not needed at runtime)
+sketches/
+
+# OS noise
+.DS_Store
+Thumbs.db
+*.log
+*.pid
+*.pid.lock
+
+# Documentation that doesn't belong in the image
+CLAUDE.md
+SETUP.md

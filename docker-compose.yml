@@ -1,0 +1,66 @@
+# Docker Compose for the Minivers base site.
+#
+# Usage:
+#   1. cp .env.example .env  (edit values as needed)
+#   2. docker compose build
+#   3. docker compose up
+#
+# The app will be reachable on http://localhost:${APP_PORT} (default: 8000).
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      # Exposed only so you can connect from a local client (psql, GUI).
+      # Comment this block if you don't want Postgres reachable from the host.
+      - "${DB_PORT}:5432"
+    healthcheck:
+      # pg_isready is shipped with the postgres image; exit 0 means "accepting connections".
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Django
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+      DJANGO_DEBUG: ${DJANGO_DEBUG}
+      DJANGO_ALLOWED_HOSTS: ${DJANGO_ALLOWED_HOSTS}
+      # Database
+      DB_ENGINE: ${DB_ENGINE}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+    ports:
+      - "${APP_PORT}:8000"
+    # `runserver` auto-reloads on file changes — bind-mount the source for a
+    # tight dev loop. Remove these two lines for a production-like run.
+    volumes:
+      - .:/app
+      # Avoid clobbering the venv inside the container when we bind-mount /app
+      - /app/__pycache__
+    command:
+      - python
+      - manage.py
+      - runserver
+      - 0.0.0.0:8000
+
+volumes:
+  pg_data:

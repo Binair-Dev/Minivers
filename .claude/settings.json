@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Grep|Glob",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"/usr/local/bin/node\" \"/workspace/Minivers/.vigie/graph-reminder.cjs\""
+          }
+        ]
+      }
+    ]
+  }
+}

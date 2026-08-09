@@ -1,0 +1,8 @@
+Django>=4.2,<5.0
+Pillow>=10.0.0
+python-dotenv>=1.0.0
+
+# PostgreSQL driver. Not strictly required for SQLite-only local runs, but
+# installed here so that `manage.py dbshell` and migrations work in any setup.
+# psycopg3 is the modern, recommended driver for Django 4.2+.
+psycopg[binary]>=3.1.0

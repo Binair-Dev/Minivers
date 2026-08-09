@@ -1,0 +1,411 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<!-- CHAUSSETTES BANNER -->
+
+
+<!-- NAV -->
+<nav>
+<a href="#" class="logo">Mini<span>vers</span></a>
+<ul>
+<li><a href="#comment">Comment ça marche</a></li>
+<li><a href="#activites">Parc</a></li>
+<li><a href="#tarifs">Tarifs</a></li>
+<li><a href="#anniversaires">Anniversaires</a></li>
+<li><a href="#evenements">Agenda</a></li>
+<li><a href="#boutique">Boutique</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+<div class="nav-right">
+<button class="btn-cart" onclick="toggleCart()">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+<span class="cart-count" id="cartCount">0</span>
+</button>
+<button class="btn-resa" onclick="toggleCart()">Réserver</button>
+</div>
+</nav>
+<div class="sock-banner" id="sockBanner">
+<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+Chaussettes antidérapantes obligatoires — vendues sur place (2 €/paire)
+</div>
+
+
+<!-- HERO -->
+<section class="hero">
+<h1>Bienvenue au Minivers !</h1>
+<p>Parc indoor & boutique de jeux — un espace ludique et sécurisé pour les enfants de 0 à 12 ans.</p>
+<div class="hero-cta">
+<a href="#tarifs" class="btn-hero">Réserver une session</a>
+<a href="#comment" class="btn-hero outline">Comment ça marche ?</a>
+</div>
+
+</section>
+
+<!-- CARROUSEL PHOTOS DU PARC -->
+<div class="carousel" id="mainCarousel">
+<div class="carousel-track">
+<div class="carousel-card" style="background-image:url('{% static 'img/carousel/card01.webp' %}');background-size:cover;background-position:center"><span>Zone Tout-Petits (0-3 ans)</span></div><div class="carousel-card" style="background-image:url('{% static 'img/carousel/card02.webp' %}');background-size:cover;background-position:center"><span>Grande Structure</span></div><div class="carousel-card" style="background-image:url('{% static 'img/carousel/card03.webp' %}');background-size:cover;background-position:center"><span>Toboggan Geant</span></div><div class="carousel-card" style="background-image:url('{% static 'img/carousel/card04.webp' %}');background-size:cover;background-position:center"><span>Jeux Immersifs</span></div><div class="carousel-card" style="background-image:url('{% static 'img/carousel/card05.webp' %}');background-size:cover;background-position:center"><span>Jeux de Role</span></div><div class="carousel-card" style="background-image:url('{% static 'img/carousel/card06.webp' %}');background-size:cover;background-position:center"><span>Bac a Sable</span></div><div class="carousel-card" style="background-image:url('{% static 'img/carousel/card07.webp' %}');background-size:cover;background-position:center"><span>Espace Interactif</span></div><div class="carousel-card" style="background-image:url('{% static 'img/carousel/card08.webp' %}');background-size:cover;background-position:center"><span>Snack & Detente</span></div>
+</div>
+</div>
+
+<!-- EVENT CARD -->
+<div style="max-width:700px;margin:0 auto 20px;border-radius:var(--r);overflow:hidden;box-shadow:0 8px 30px rgba(0,0,0,.12)">
+<div style="height:200px;background:linear-gradient(135deg,#FFB5C2 0%,#C3A6FF 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;position:relative">
+<div style="position:absolute;top:16px;left:16px;background:#FFE066;color:#333;font-weight:700;font-size:.75rem;padding:4px 12px;border-radius:20px">⭐ PROCHAIN ÉVÉNEMENT</div>
+<h3 style="color:#fff;font-size:1.4rem;margin:0 0 8px;font-family:var(--fh)">Journée Super Héros</h3>
+<p style="color:rgba(255,255,255,.9);font-size:1rem;margin:0 0 16px">Samedi 21 Juin — Déguisez-vous en votre héros préféré !</p>
+<a href="#evenements" style="background:#fff;color:var(--rose);padding:10px 24px;border-radius:50px;font-weight:700;text-decoration:none;font-size:.9rem">Voir l'agenda</a>
+</div>
+</div>
+
+
+<div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--bg)" d="M0,35 C360,70 720,0 1080,35 C1260,52 1380,18 1440,35 L1440,70 L0,70Z"/></svg></div>
+
+<!-- COMMENT ÇA MARCHE -->
+<section class="section full-sec" id="comment">
+<h2 class="stitle">Comment ça marche ?</h2>
+<p class="stitle-sub">4 étapes simples et votre journée au Minivers est prête !</p>
+<div class="steps-grid">
+<div class="step"><div class="step-num">1</div><h3>Choisissez</h3><p>Sélectionnez votre créneau, date et nombre de participants.</p></div>
+<div class="step"><div class="step-num">2</div><h3>Réservez</h3><p>Validez votre panier et recevez votre confirmation par email.</p></div>
+<div class="step"><div class="step-num">3</div><h3>Venez</h3><p>Chaussettes antidérapantes aux pieds, c'est parti !</p></div>
+<div class="step"><div class="step-num">4</div><h3>Amusez-vous</h3><p>Profitez des espaces, activités et de la boutique !</p></div>
+</div>
+</section>
+
+
+<div class="cyl-row" aria-hidden="true"><div class="cyl" style="background:var(--rose);width:90px"></div><div class="cyl" style="background:var(--turquoise);width:130px"></div><div class="cyl" style="background:var(--jaune);width:60px"></div><div class="cyl" style="background:var(--violet);width:100px"></div><div class="cyl" style="background:var(--bleu);width:70px"></div></div>
+<div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--turquoise)" d="M0,35 C480,0 960,70 1440,35 L1440,0 L0,0Z"/></svg></div>
+
+<!-- FRESQUE UNIVERS -->
+<section class="bg-t full-sec" id="activites">
+<div class="section">
+<h2 class="stitle" style="color:#fff">Nos Univers Immersifs</h2>
+<p class="stitle-sub" style="margin-bottom:24px">7 espaces de jeux d'imitation, tous alignés dans notre fresque — image à venir !</p>
+</div>
+<div class="fresque-wall">
+<div class="fresque-panel fp1"><div class="fp-placeholder">Image à venir</div><div class="fp-emoji">🏗️</div><div class="fp-label">Chantier</div></div>
+<div class="fresque-panel fp2"><div class="fp-placeholder">Image à venir</div><div class="fp-emoji">👮</div><div class="fp-label">Police</div></div>
+<div class="fresque-panel fp3"><div class="fp-placeholder">Image à venir</div><div class="fp-emoji">🚒</div><div class="fp-label">Pompier</div></div>
+<div class="fresque-panel fp4"><div class="fp-placeholder">Image à venir</div><div class="fp-emoji">💇</div><div class="fp-label">Relooking</div></div>
+<div class="fresque-panel fp5"><div class="fp-placeholder">Image à venir</div><div class="fp-emoji">🏪</div><div class="fp-label">Épicerie</div></div>
+<div class="fresque-panel fp6"><div class="fp-placeholder">Image à venir</div><div class="fp-emoji">🏥</div><div class="fp-label">Médecin</div></div>
+<div class="fresque-panel fp7"><div class="fp-placeholder">Image à venir</div><div class="fp-emoji">🔧</div><div class="fp-label">Garage</div></div>
+</div>
+</section>
+
+
+<div class="cyl-row" aria-hidden="true"><div class="cyl" style="background:var(--turquoise);width:110px"></div><div class="cyl" style="background:var(--rose);width:70px"></div><div class="cyl" style="background:var(--jaune);width:140px"></div><div class="cyl" style="background:var(--violet);width:60px"></div></div>
+<div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--bg)" d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,15 1440,30 L1440,70 L0,70Z"/></svg></div>
+
+<!-- JEUX DE RÔLE -->
+
+<div class="color-bar"><span style="background:var(--rose)"></span><span style="background:var(--turquoise)"></span><span style="background:var(--jaune)"></span><span style="background:var(--violet)"></span></div>
+<section class="section" id="jeux-role">
+<h2 class="stitle">🛒 Notre Boutique</h2>
+<p class="stitle-sub">Découvrez nos 7 univers de jeux d'imitation</p>
+<div class="bout-notice">Accès libre à la boutique, sans accès au parc. Le parc ouvrira prochainement !</div>
+<div style="margin-bottom:24px"><h2 class="stitle">5 Compétences Développées</h2>
+<p class="stitle-sub">Nos activités et jouets stimulent plusieurs compétences simultanément.</p>
+<div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;max-width:900px;margin:0 auto 32px">
+<div style="padding:12px 28px;border-radius:50px;font-weight:700;font-size:.95rem;background:rgba(78,205,196,.15);border:2px solid var(--turquoise);color:#00897B;cursor:pointer;transition:transform .2s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'">🌱 Éveil</div>
+<div style="padding:12px 28px;border-radius:50px;font-weight:700;font-size:.95rem;background:rgba(96,165,250,.15);border:2px solid var(--bleu);color:#1565C0;cursor:pointer;transition:transform .2s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'">🏃 Motricité</div>
+<div style="padding:12px 28px;border-radius:50px;font-weight:700;font-size:.95rem;background:rgba(168,85,247,.15);border:2px solid var(--violet);color:#6A1B9A;cursor:pointer;transition:transform .2s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'">🧩 Réflexion & logique</div>
+<div style="padding:12px 28px;border-radius:50px;font-weight:700;font-size:.95rem;background:rgba(255,107,157,.15);border:2px solid var(--rose);color:#AD1457;cursor:pointer;transition:transform .2s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'">🎨 Créativité</div>
+<div style="padding:12px 28px;border-radius:50px;font-weight:700;font-size:.95rem;background:rgba(255,230,109,.25);border:2px solid #C4A000;color:#E65100;cursor:pointer;transition:transform .2s" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'">🎭 Jeux d'imitation</div>
+</div></div>
+<div class="boutique-buttons">
+<button class="boutique-btn" style="--btn-color:#FFB5C2" onclick="alert('Boutique Chantier - bientôt disponible !')"><span class="boutique-btn-icon">🏗️</span><span class="boutique-btn-name">Chantier</span></button>
+<button class="boutique-btn" style="--btn-color:#7FDBDA" onclick="alert('Boutique Police - bientôt disponible !')"><span class="boutique-btn-icon">👮</span><span class="boutique-btn-name">Police</span></button>
+<button class="boutique-btn" style="--btn-color:#FFE066" onclick="alert('Boutique Pompier - bientôt disponible !')"><span class="boutique-btn-icon">🚒</span><span class="boutique-btn-name">Pompier</span></button>
+<button class="boutique-btn" style="--btn-color:#C3A6FF" onclick="alert('Boutique Relooking - bientôt disponible !')"><span class="boutique-btn-icon">💇</span><span class="boutique-btn-name">Relooking</span></button>
+<button class="boutique-btn" style="--btn-color:#7FDBDA" onclick="alert('Boutique Épicerie - bientôt disponible !')"><span class="boutique-btn-icon">🏪</span><span class="boutique-btn-name">Épicerie</span></button>
+<button class="boutique-btn" style="--btn-color:#FFB5C2" onclick="alert('Boutique Médecin - bientôt disponible !')"><span class="boutique-btn-icon">🏥</span><span class="boutique-btn-name">Médecin</span></button>
+<button class="boutique-btn" style="--btn-color:#FFE066" onclick="alert('Boutique Garage - bientôt disponible !')"><span class="boutique-btn-icon">🔧</span><span class="boutique-btn-name">Garage</span></button>
+</div>
+</div>
+<div class="age-rythme">
+<h3 class="age-rythme-title">🎯 À chaque âge son rythme</h3>
+<div class="age-tranches">
+<div class="age-tranche" style="--age-color:#7FDBDA"><span class="age-emoji">👶</span><span class="age-label">0-2 ans</span><span class="age-desc">Éveil sensoriel</span></div>
+<div class="age-tranche" style="--age-color:#FFB5C2"><span class="age-emoji">🧒</span><span class="age-label">2-4 ans</span><span class="age-desc">Exploration</span></div>
+<div class="age-tranche" style="--age-color:#FFE066"><span class="age-emoji">🧑</span><span class="age-label">4-7 ans</span><span class="age-desc">Imitation</span></div>
+<div class="age-tranche" style="--age-color:#C3A6FF"><span class="age-emoji">🧑‍🎓</span><span class="age-label">7-10 ans</span><span class="age-desc">Créativité</span></div>
+<div class="age-tranche" style="--age-color:#FFB5C2"><span class="age-emoji">🧑‍🚀</span><span class="age-label">10-12 ans</span><span class="age-desc">Défi</span></div>
+</div>
+</div>
+</section>
+
+<!-- CATÉGORIES -->
+<div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--bg)" d="M0,30 C360,60 720,0 1080,30 C1260,45 1380,15 1440,30 L1440,70 L0,70Z"/></svg></div>
+
+
+<div class="color-bar"><span style="background:var(--rose)"></span><span style="background:var(--turquoise)"></span><span style="background:var(--jaune)"></span><span style="background:var(--violet)"></span></div>
+
+<div class="color-bar"><span style="background:var(--rose)"></span><span style="background:var(--turquoise)"></span><span style="background:var(--jaune)"></span><span style="background:var(--violet)"></span></div>
+<div class="cyl-row" aria-hidden="true"><div class="cyl" style="background:var(--violet);width:80px"></div><div class="cyl" style="background:var(--rose);width:120px"></div><div class="cyl" style="background:var(--turquoise);width:90px"></div><div class="cyl" style="background:var(--jaune);width:110px"></div><div class="cyl" style="background:var(--bleu);width:60px"></div></div>
+<!-- TARIFS -->
+<section class="section full-sec" id="tarifs">
+<h2 class="stitle">Nos Tarifs — Créneau 2h</h2>
+<p class="stitle-sub">Réservation en ligne avec nombre de places limité.</p>
+<div class="pricing">
+<div class="pcard"><div class="plabel">Accompagnant +13 ans</div><div class="pval">3€</div><div class="pdesc">Par créneau</div><button class="pcard-btn" onclick="addToCart('Accompagnant',3)">Ajouter</button></div>
+<div class="pcard pop"><div class="badge">Le plus choisi</div><div class="plabel">Enfant (2-12 ans)</div><div class="pval">15€</div><div class="pdesc">Par créneau</div><button class="pcard-btn" onclick="addToCart('Enfant',15)">Ajouter</button></div>
+<div class="pcard"><div class="plabel">Bébé (7-23 mois)</div><div class="pval">9€</div><div class="pdesc">Par créneau</div><button class="pcard-btn" onclick="addToCart('Bébé',9)">Ajouter</button></div>
+<div class="pcard"><div class="plabel">0-6 mois</div><div class="pval">Gratuit</div><div class="pdesc">Bienvenue !</div></div>
+</div>
+<button class="asst-free-btn">👶 Assistante maternelle — Entrée gratuite · Enfants accompagnés payants au tarif habituel</button>
+<div class="sable-option">
+<svg width="32" height="32" viewBox="0 0 48 48" fill="none" stroke="#4ECDC4" stroke-width="2.5"><ellipse cx="24" cy="28" rx="16" ry="8"/><circle cx="20" cy="24" r="2"/></svg>
+<div><h4>Accès Bac à Sable</h4><p>4€ par personne — en complément de votre session</p></div>
+<button class="sable-btn" onclick="addToCart('Bac à Sable',4)">Ajouter 4€</button>
+</div>
+
+<div class="pass">
+<h3 style="margin-bottom:4px">Pass 10 = 12 entrées !</h3>
+<div class="pval" style="font-size:2rem">180€</div>
+<p class="pass-detail">10 + 2 entrées offertes (1 enfant + 1 adulte)<br>+ 1 boisson chaude offerte à chaque visite (café, chocolat chaud ou thé)</p>
+<button class="pass-btn" onclick="addToCart('Pass 10',180)">Ajouter au panier</button>
+</div>
+
+<div class="wallet-cta">
+<div class="wallet-card">
+<svg viewBox="0 0 48 48" fill="none" stroke="var(--violet)" stroke-width="2.5"><rect x="4" y="12" width="40" height="28" rx="4"/><path d="M4 20h40"/><circle cx="36" cy="30" r="3"/></svg>
+<div><h4>Carte Wallet Minivers</h4><p>Suivez vos entrées restantes et cumulez des tampons de fidélité directement dans votre portefeuille !</p></div>
+</div>
+</div>
+</section>
+
+<!-- VALEURS -->
+<section class="section" style="padding-bottom:8px">
+<h2 class="stitle">Nos Valeurs</h2>
+<p class="stitle-sub">Ce qui guide le Minivers au quotidien.</p>
+</section>
+<div class="val-arches-wrap">
+<div class="val-arches">
+<div class="val-arch" style="height:195px;background:#FFD4E4">Appren&shy;tissage</div>
+<div class="val-arch" style="height:155px;background:#FFF0B0">Ludique</div>
+<div class="val-arch" style="height:215px;background:#B8EDE9">Créa&shy;tivité</div>
+<div class="val-arch" style="height:168px;background:#FFD6C0">Défou&shy;loir</div>
+<div class="val-arch" style="height:230px;background:#C8E4FF">Motri&shy;cité</div>
+<div class="val-arch" style="height:178px;background:#E8D5FF">Confiance en soi</div>
+<div class="val-arch" style="height:205px;background:#D4F0C8">Explo&shy;ration</div>
+<div class="val-arch" style="height:148px;background:#FFE8CC">Déve&shy;loppement émotionnel</div>
+<div class="val-arch" style="height:220px;background:#E1D0FF">Auto&shy;nomie</div>
+<div class="val-arch" style="height:172px;background:#FFD0D8">Éveil sensoriel</div>
+</div>
+</div>
+
+<div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--rose)" d="M0,35 C240,70 480,0 720,35 C960,70 1200,0 1440,35 L1440,0 L0,0Z"/></svg></div>
+
+<!-- ANNIVERSAIRES -->
+<section class="section full-sec" id="anniversaires">
+<h2 class="stitle">Anniversaires au Minivers</h2>
+<p class="stitle-sub">Faites de son anniversaire un moment magique ! Personnalisez votre formule.</p>
+<div class="bday-grid">
+<div class="bday"><h3>Balade</h3><div class="bday-price">15€ <small>/ enfant</small></div><ul><li>2h d'accès au parc</li><li>Salle privatisée 30min</li><li>Boisson offerte</li></ul><button class="bday-btn" onclick="addToCart('Anniversaire Balade',15)">Ajouter</button></div>
+<div class="bday" style="border:3px solid var(--rose)"><h3>Fête</h3><div class="bday-price">22€ <small>/ enfant</small></div><ul><li>2h d'accès au parc</li><li>Salle privatisée 1h</li><li>Gâteau + bougies</li><li>Goûter complet</li><li>Cadeau surprise</li></ul><button class="bday-btn" onclick="addToCart('Anniversaire Fête',22)">Ajouter</button></div>
+<div class="bday"><h3>Royale</h3><div class="bday-price">30€ <small>/ enfant</small></div><ul><li>Accès illimité journée</li><li>Salle 1h30</li><li>Gâteau personnalisé</li><li>Animations</li><li>Sac cadeau + 10% boutique</li></ul><button class="bday-btn" onclick="addToCart('Anniversaire Royale',30)">Ajouter</button></div>
+</div>
+<p style="text-align:center;margin-top:20px;font-size:.9rem;color:#636E72">Au moment de la réservation : prénom & âge de l'enfant, nombre d'enfants, choix du gâteau (chocolat, nature, cookie, fraise), parfums de sirop, allergies éventuelles.</p>
+</section>
+
+<!-- ÉVÉNEMENTS -->
+
+<div class="color-bar"><span style="background:var(--rose)"></span><span style="background:var(--turquoise)"></span><span style="background:var(--jaune)"></span><span style="background:var(--violet)"></span></div>
+<section class="section full-sec" id="evenements">
+<h2 class="stitle">Agenda du mois</h2>
+<p class="stitle-sub">Ateliers, booms et animations spéciales — tous les événements du mois !</p>
+<div class="events-grid">
+<div class="event"><div class="event-img" style="background-image:url('{% static 'img/events/event01.webp' %}');background-size:cover;background-position:center"><span class="event-label">Super Heros</span></div><div class="ev-body"><div class="ev-date">Samedi 21 Juin 2026</div><h3>Journee Super Heros</h3><p>Deguisements, challenges et rencontres avec vos heros preferes !</p></div></div><div class="event"><div class="event-img" style="background-image:url('{% static 'img/events/event02.webp' %}');background-size:cover;background-position:center"><span class="event-label">Nuit Etoilee</span></div><div class="ev-body"><div class="ev-date">Vendredi 4 Juillet 2026</div><h3>Nuit au Parc</h3><p>Soiree magique avec jeux lumineux, contes et gouter de minuit.</p></div></div><div class="event"><div class="event-img" style="background-image:url('{% static 'img/events/event03.webp' %}');background-size:cover;background-position:center"><span class="event-label">Carnaval</span></div><div class="ev-body"><div class="ev-date">Mercredi 16 Juillet 2026</div><h3>Carnaval Geant</h3><p>Concours de deguisements, parade et surprises pour tous !</p></div></div>
+</div>
+</section>
+
+<div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--bg)" d="M0,30 C360,0 720,60 1080,20 C1260,0 1380,40 1440,20 L1440,70 L0,70Z"/></svg></div>
+
+
+<div class="color-bar"><span style="background:var(--rose)"></span><span style="background:var(--turquoise)"></span><span style="background:var(--jaune)"></span><span style="background:var(--violet)"></span></div>
+
+<div class="cyl-row" aria-hidden="true"><div class="cyl" style="background:var(--rose);width:100px"></div><div class="cyl" style="background:var(--jaune);width:70px"></div><div class="cyl" style="background:var(--violet);width:130px"></div><div class="cyl" style="background:var(--turquoise);width:80px"></div></div>
+<!-- INSTAGRAM -->
+<section class="section">
+<h2 class="stitle">Notre feed Instagram</h2>
+<p class="stitle-sub">Suivez-nous @minivers_lecres pour les dernières nouvelles !</p>
+<div class="insta-grid">
+<a href="https://instagram.com/minivers_lecres" target="_blank" style="aspect-ratio:1;border-radius:var(--r);background:linear-gradient(135deg,#FFB5C2,#FFE066);display:flex;align-items:center;justify-content:center;text-decoration:none"><span style="font-size:2rem">🎨</span></a>
+<a href="https://instagram.com/minivers_lecres" target="_blank" style="aspect-ratio:1;border-radius:var(--r);background:linear-gradient(135deg,#7FDBDA,#C3A6FF);display:flex;align-items:center;justify-content:center;text-decoration:none"><span style="font-size:2rem">🎲</span></a>
+<a href="https://instagram.com/minivers_lecres" target="_blank" style="aspect-ratio:1;border-radius:var(--r);background:linear-gradient(135deg,#FFE066,#FFB5C2);display:flex;align-items:center;justify-content:center;text-decoration:none"><span style="font-size:2rem">🧸</span></a>
+<a href="https://instagram.com/minivers_lecres" target="_blank" style="aspect-ratio:1;border-radius:var(--r);background:linear-gradient(135deg,#C3A6FF,#7FDBDA);display:flex;align-items:center;justify-content:center;text-decoration:none"><span style="font-size:2rem">🎁</span></a>
+<a href="https://instagram.com/minivers_lecres" target="_blank" style="aspect-ratio:1;border-radius:var(--r);background:linear-gradient(135deg,#FFB5C2,#7FDBDA);display:flex;align-items:center;justify-content:center;text-decoration:none"><span style="font-size:2rem">🎉</span></a>
+<a href="https://instagram.com/minivers_lecres" target="_blank" style="aspect-ratio:1;border-radius:var(--r);background:linear-gradient(135deg,#7FDBDA,#FFE066);display:flex;align-items:center;justify-content:center;text-decoration:none"><span style="font-size:2rem">🔥</span></a>
+</div>
+</section>
+
+<!-- CONTACT -->
+<section class="section full-sec" id="contact">
+<h2 class="stitle">Nous Contacter</h2>
+<p class="stitle-sub">Une question ? Une demande spéciale (professionnels, groupes…) ? Écrivez-nous !</p>
+<div class="contact-grid">
+<div class="contact-form">
+<input placeholder="Votre nom" type="text">
+<input placeholder="Votre email" type="email">
+<input placeholder="Sujet" type="text">
+<textarea placeholder="Votre message..."></textarea>
+<button type="button">Envoyer le message</button>
+</div>
+<div class="contact-info">
+<h3>Coordonnées</h3>
+<p>910 Rte de Nîmes, 34920 Le Crès<br>06 52 60 54 59<br>begeault.maeva@gmail.com</p>
+<h3 style="margin-top:24px">Suivez-nous</h3>
+<div class="social">
+<a href="#" class="social-ig" title="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
+<a href="#" class="social-tt" title="TikTok"><svg viewBox="0 0 24 24"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1v-3.5a6.37 6.37 0 00-.79-.05A6.34 6.34 0 003.15 15.2a6.34 6.34 0 0010.86 4.48 6.28 6.28 0 001.86-4.48V8.74a8.24 8.24 0 004.86 1.57v-3.4a4.85 4.85 0 01-1.14-.22z"/></svg></a>
+<a href="#" class="social-fb" title="Facebook"><svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+</div>
+</div>
+</div>
+</section>
+
+<div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--turquoise)" d="M0,40 C240,80 480,0 720,40 C960,80 1200,0 1440,40 L1440,0 L0,0Z"/></svg></div>
+
+<!-- INFOS + CARTE -->
+<section class="bg-t" id="infos">
+<div class="section">
+<h2 class="stitle" style="color:#fff">Infos Pratiques</h2>
+<p class="stitle-sub" style="color:rgba(255,255,255,.85)">Tout ce qu'il faut savoir avant votre venue.</p>
+<div class="infos-wrap">
+<div style="color:#fff">
+<div class="info-row"><div><h3>Adresse</h3><p style="color:rgba(255,255,255,.8)">910 Rte de Nîmes<br>34920 Le Crès</p></div></div>
+<div class="info-row"><div><h3>Horaires</h3><p style="color:rgba(255,255,255,.8)">Mercredi - Vendredi : 10h - 18h<br>Samedi - Dimanche : 9h30 - 19h<br>Vacances scolaires : 9h30 - 19h</p></div></div>
+<div class="info-row"><div><h3>Contact</h3><p style="color:rgba(255,255,255,.8)">06 52 60 54 59<br>begeault.maeva@gmail.com</p></div></div>
+<h4 style="margin-bottom:8px">Transports & Accès</h4>
+<div class="transport-grid">
+<div class="transport-item" style="background:rgba(255,255,255,.15)"><strong style="color:var(--jaune)">🚗 En voiture</strong>RN113 est de Montpellier — Grand parking gratuit. ⚠️ Embouteillages zone Trifontaine le samedi et heures de pointe.</div>
+<div class="transport-item" style="background:rgba(255,255,255,.15)"><strong style="color:var(--jaune)">🚊 En tram</strong>Ligne 2 direction Jacou. Descendre à Via Domitia ou Notre-Dame de Sablassou, puis bus ou à pied (~2 km).</div>
+<div class="transport-item" style="background:rgba(255,255,255,.15)"><strong style="color:var(--jaune)">🚌 En bus</strong>Lignes 21, 22, 30, 31, 35, 46 — Arrêt à proximité directe.</div>
+<div class="transport-item" style="background:rgba(255,255,255,.15)"><strong style="color:var(--jaune)">♿ PMR</strong>Accès fauteuil complet sur tout le site.</div>
+</div>
+<div class="notice" style="margin-top:24px">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D3436" stroke-width="2.5"><path d="M4 2h12v10l2 4a3 3 0 01-3 3H9a3 3 0 01-3-3V2z"/></svg>
+Chaussettes antidérapantes obligatoires (accompagnants et enfants) !
+</div>
+</div>
+<div>
+<div class="map-frame">
+<iframe src="https://www.openstreetmap.org/export/embed.html?bbox=3.940%2C43.630%2C3.960%2C43.645&layer=mapnik&marker=43.6375%2C3.950" loading="lazy"></iframe>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--text)" d="M0,30 C360,60 720,0 1080,30 C1260,50 1380,10 1440,30 L1440,0 L0,0Z"/></svg></div>
+
+
+<div class="color-bar"><span style="background:var(--rose)"></span><span style="background:var(--turquoise)"></span><span style="background:var(--jaune)"></span><span style="background:var(--violet)"></span></div>
+<!-- FOOTER -->
+<footer>
+<div style="margin-bottom:16px"><a href="#" class="logo" style="font-size:1.8rem;color:#fff">Mini<span>vers</span></a></div>
+<p>Parc Indoor & Boutique de Jeux — Le Crès, Montpellier</p>
+<div class="flink">
+<a href="#">Accueil</a><a href="#">Parc</a><a href="#">Tarifs</a><a href="#">Boutique</a><a href="#">Anniversaires</a><a href="#">Agenda</a><a href="#">Mentions légales</a>
+</div>
+<div class="nl"><input placeholder="Votre email..." type="email"><button>Newsletter</button></div>
+<p style="margin-top:8px;font-size:.78rem;opacity:.4">Newsletter 1 à 2 fois par mois — événements et offres du moment</p>
+<p style="margin-top:20px;font-size:.78rem">&copy; 2026 Minivers — Tous droits réservés</p>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+<div class="cart-header"><h3>Votre réservation</h3><button class="cart-close" onclick="toggleCart()">&times;</button></div>
+<div class="cart-body" id="cartBody">
+<div class="cart-empty" id="cartEmpty">
+<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+<p>Votre panier est vide</p>
+</div>
+<div id="cartItems"></div>
+</div>
+<div class="cart-footer">
+<div class="cart-sock">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2D3436" stroke-width="2.5"><path d="M4 2h12v10l2 4a3 3 0 01-3 3H9a3 3 0 01-3-3V2z"/></svg>
+Rappel : chaussettes antidérapantes obligatoires !
+</div>
+<div class="cart-total"><span>Total</span><span id="cartTotal">0€</span></div>
+<button class="btn-val" onclick="validateCart()">Valider ma réservation</button>
+</div>
+</div>
+
+<script>
+let cart=[];
+function addToCart(name,price){
+  let existing=cart.find(i=>i.name===name);
+  if(existing){existing.qty++}else{cart.push({name,price,qty:1})}
+  renderCart();
+  let el=document.getElementById('cartCount');
+  el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop');
+}
+function removeFromCart(idx){cart.splice(idx,1);renderCart()}
+function renderCart(){
+  let count=cart.reduce((s,i)=>s+i.qty,0);
+  document.getElementById('cartCount').textContent=count;
+  let itemsEl=document.getElementById('cartItems');
+  let emptyEl=document.getElementById('cartEmpty');
+  if(!cart.length){itemsEl.innerHTML='';emptyEl.style.display='block';document.getElementById('cartTotal').textContent='0€';return}
+  emptyEl.style.display='none';
+  let html='';let total=0;
+  cart.forEach((item,idx)=>{
+    let sub=item.price*item.qty;total+=sub;
+    html+='<div class="cart-item"><div class="cart-item-info"><h4>'+item.name+(item.qty>1?' x'+item.qty:'')+'</h4><p>'+item.price+'€ / unité</p></div><div class="cart-item-right"><span class="cart-item-price">'+sub+'€</span><button class="cart-item-rm" onclick="removeFromCart('+idx+')">&times;</button></div></div>';
+  });
+  itemsEl.innerHTML=html;
+  document.getElementById('cartTotal').textContent=total+'€';
+}
+function toggleCart(){
+  document.getElementById('cartOverlay').classList.toggle('open');
+  document.getElementById('cartDrawer').classList.toggle('open');
+}
+function validateCart(){
+  if(!cart.length){alert('Votre panier est vide !');return}
+  alert('Réservation validée ! Vous recevrez un email de confirmation.');
+  cart=[];renderCart();toggleCart();
+}
+
+// Sock banner scroll hide
+window.addEventListener('scroll',function(){var b=document.getElementById('sockBanner');if(b){b.classList.toggle('hidden',window.scrollY>200)}});
+
+
+(function(){
+  var car=document.getElementById('mainCarousel');
+  if(!car)return;
+  var t=car.querySelector('.carousel-track');
+  var _iv=null;
+  function stop(){if(_iv){clearInterval(_iv);_iv=null}}
+  car.addEventListener('mousemove',function(e){
+    stop();
+    var r=car.getBoundingClientRect();
+    var x=e.clientX-r.left;
+    var w=r.width;
+    var zone=w*0.18;
+    if(x<zone){
+      var speed=Math.round((1-(x/zone))*10)+2;
+      _iv=setInterval(function(){t.scrollBy(-speed,0)},16);
+    }else if(x>w-zone){
+      var speed2=Math.round(((x-(w-zone))/zone)*10)+2;
+      _iv=setInterval(function(){t.scrollBy(speed2,0)},16);
+    }
+  });
+  car.addEventListener('mouseleave',stop);
+  car.addEventListener('mousedown',stop);
+})();
+
+</script>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,45 @@
+# ---- Python / Django -------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.eggs/
+.installed.cfg
+*.egg
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+local_settings.py
+
+# ---- Environment -----------------------------------------------------------
+# Real env files MUST NOT be committed. Only .env.example is shared.
+.env
+.env.*
+!.env.example
+
+# ---- IDE -------------------------------------------------------------------
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# ---- Logs / runtime --------------------------------------------------------
+*.log
+*.pid
+*.pid.lock
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/

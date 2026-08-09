@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sudo apt-get install -y poppler-utils)",
+      "Bash(pdftotext \"/mnt/hdde/minivers \\(1\\).pdf\" -)",
+      "Bash(pdftotext \"/mnt/hdde/minivers \\(2\\).pdf\" -)",
+      "Bash(python3 *)"
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+"""Minivers Django project package."""

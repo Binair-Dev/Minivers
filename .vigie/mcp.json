@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "vigie": {
+      "command": "/usr/local/bin/node",
+      "args": [
+        "/app/node_modules/tsx/dist/cli.mjs",
+        "/app/server/vigie-mcp.ts",
+        "--root",
+        "/workspace/Minivers"
+      ]
+    }
+  }
+}

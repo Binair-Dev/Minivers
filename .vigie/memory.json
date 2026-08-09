@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "learnings": [
+    {
+      "id": "lrn_1786238743060_t9hi9m",
+      "text": "Le projet a un fichier CLAUDE.md à la racine — le lire en début de session",
+      "status": "validated",
+      "source": "coldstart",
+      "category": "contexte",
+      "scope": "project",
+      "pinned": false,
+      "createdAt": 1786238743060,
+      "lastConfirmedAt": 1786238748279,
+      "timesUsed": 1
+    },
+    {
+      "id": "lrn_1786238743060_ympuc0",
+      "text": "Graphe de code Vigie : 11 fichiers, 32 symboles — interroger via l'outil vigie_explore",
+      "status": "validated",
+      "source": "coldstart",
+      "category": "contexte",
+      "scope": "project",
+      "pinned": false,
+      "createdAt": 1786238743060,
+      "lastConfirmedAt": 1786238749377,
+      "timesUsed": 1
+    }
+  ],
+  "skills": []
+}
