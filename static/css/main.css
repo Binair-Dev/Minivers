@@ -260,3 +260,15 @@ footer p{opacity:.6;margin-bottom:8px;font-size:.88rem}
 .insta-grid a{transition:transform .2s}
 .insta-grid a:hover{transform:scale(1.05)}
 
+
+
+/* ==== INFOS PRATIQUES (page dédiée) ==== */
+.infos-block{max-width:640px;margin:0 auto 40px;text-align:left}
+.infos-h3{font-size:1.2rem;margin-bottom:14px;font-family:var(--fh)}
+.horaires-table{background:#fff;border-radius:var(--r);box-shadow:0 4px 20px rgba(0,0,0,.06);overflow:hidden}
+.horaire-row{display:flex;justify-content:space-between;padding:10px 20px;font-size:.95rem}
+.horaire-row+.horaire-row{border-top:1px solid #f0f0f0}
+.horaire-jour{font-weight:700;color:var(--violet)}
+.horaire-heures{font-weight:600}
+.horaire-heures.ferme{color:var(--rose)}
+.empty-msg{text-align:center;color:#636E72;background:#fff;border-radius:var(--r);padding:24px;box-shadow:0 4px 20px rgba(0,0,0,.06)}
