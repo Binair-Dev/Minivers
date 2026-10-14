@@ -6,3 +6,8 @@ python-dotenv>=1.0.0
 # installed here so that `manage.py dbshell` and migrations work in any setup.
 # psycopg3 is the modern, recommended driver for Django 4.2+.
 psycopg[binary]>=3.1.0
+
+# Production WSGI server + static file serving (works with any compose/reverse
+# proxy setup, no extra container needed).
+gunicorn>=21.2.0
+whitenoise>=6.6.0
