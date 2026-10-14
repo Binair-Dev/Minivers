@@ -1,11 +1,13 @@
-# Docker Compose for the Minivers base site.
+# Docker Compose — production stack for the Minivers site.
 #
 # Usage:
-#   1. cp .env.example .env  (edit values as needed)
-#   2. docker compose build
-#   3. docker compose up
+#   1. cp .env.example .env  (edit values, set DJANGO_DEBUG=false)
+#   2. docker compose up --build -d
+#   3. The app answers on http://localhost:${APP_PORT} (default: 8000).
 #
-# The app will be reachable on http://localhost:${APP_PORT} (default: 8000).
+# The web service runs gunicorn behind WhiteNoise (static files), backed by a
+# PostgreSQL 16 service with a named volume. Migrations + collectstatic run at
+# container start via entrypoint.sh.
 
 services:
   db:
@@ -54,23 +56,28 @@ services:
       DB_HOST: ${DB_HOST:-db}
       # Port INSIDE the compose network, not the host mapping (see DB_HOST_PORT).
       DB_PORT: ${DB_PORT:-5432}
+      # Gunicorn
+      GUNICORN_WORKERS: ${GUNICORN_WORKERS:-3}
     ports:
       - "${APP_PORT:-8000}:8000"
-    # `runserver` auto-reloads on file changes — bind-mount the source for a
-    # tight dev loop. Remove these two lines for a production-like run.
     volumes:
-      - .:/app
-      # Avoid clobbering the venv inside the container when we bind-mount /app
-      - /app/__pycache__
-      - static_data:/var/www/static
+      # Uploaded media must survive container replacement.
       - media_data:/var/www/media
+      # Static files are baked in at start by collectstatic; no volume needed.
     command:
-      - python
-      - manage.py
-      - runserver
+      - gunicorn
+      - --bind
       - 0.0.0.0:8000
+      - --workers
+      - ${GUNICORN_WORKERS:-3}
+      - --timeout
+      - "60"
+      - --access-logfile
+      - "-"
+      - --error-logfile
+      - "-"
+      - minivers.wsgi:application
 
 volumes:
   pg_data:
-  static_data:
   media_data:
