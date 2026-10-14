@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 #
-# Container entrypoint. Waits for the database, runs migrations, then
-# executes whatever command was passed (default: the Django dev server).
+# Container entrypoint. Waits for the database, runs migrations,
+# collects static files, then executes whatever command was passed
+# (default: gunicorn).
 #
 # Environment variables used (all come from .env / docker-compose):
 #   DB_HOST, DB_PORT, DB_ENGINE
@@ -36,11 +37,9 @@ if [[ "${DJANGO_MIGRATE_ON_START:-true}" == "true" ]]; then
 fi
 
 # ---- 3. Static files ----------------------------------------------------------
-# Compared lowercased: settings.py accepts true/1/yes/on in any case, so the
-# shell must agree with it rather than matching Python's "True" spelling only.
-debug_flag="$(printf '%s' "${DJANGO_DEBUG:-true}" | tr '[:upper:]' '[:lower:]')"
-if [[ "${DJANGO_COLLECTSTATIC_ON_START:-true}" == "true" \
-   && ! "${debug_flag}" =~ ^(1|true|yes|on)$ ]]; then
+# WhiteNoise serves STATIC_ROOT in production; collectstatic must always run
+# (DEBUG or not) so the image/container has the assets ready.
+if [[ "${DJANGO_COLLECTSTATIC_ON_START:-true}" == "true" ]]; then
   echo "[entrypoint] Collecting static files..."
   python manage.py collectstatic --noinput
 fi

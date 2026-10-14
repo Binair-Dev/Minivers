@@ -36,7 +36,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     DJANGO_SETTINGS_MODULE=minivers.settings
 
 # Runtime libs only: libpq for psycopg, gettext for Django i18n tooling,
-# dumb-init to forward signals to the Django process.
+# dumb-init to forward signals to the gunicorn process.
 RUN apt-get update \
  && apt-get install -y --no-install-recommends \
         libpq5 \
@@ -50,14 +50,14 @@ WORKDIR /app
 # Copy the venv from the builder
 COPY --from=builder /opt/venv /opt/venv
 
-# The entrypoint lives OUTSIDE /app on purpose: docker-compose bind-mounts the
-# host directory over /app at runtime, which would shadow the copy baked into
-# the image (and with it, its executable bit).
+# The entrypoint lives OUTSIDE /app on purpose: the image's copy of the
+# source tree must not depend on runtime bind-mounts. Invoked through `bash`
+# so the script only ever needs read permission.
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-# Writable dirs for collectstatic / uploads. They sit outside /app because the
-# bind-mount there belongs to the host user, whose uid need not match `app`.
+# Writable dirs for collectstatic / uploads. They sit outside /app so the
+# read-only or host-owned state there can never break a startup write.
 RUN mkdir -p /var/www/static /var/www/media \
  && chown -R app:app /var/www
 
@@ -68,7 +68,5 @@ USER app
 
 EXPOSE 8000
 
-# Invoked through `bash` rather than executed directly, so the script only ever
-# needs read permission — the host's exec bit becomes irrelevant.
 ENTRYPOINT ["dumb-init", "--", "bash", "/usr/local/bin/entrypoint.sh"]
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "--timeout", "60", "--access-logfile", "-", "--error-logfile", "-", "minivers.wsgi:application"]
