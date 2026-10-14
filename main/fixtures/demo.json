@@ -1,0 +1,142 @@
+[
+{
+  "model": "main.page",
+  "pk": 1,
+  "fields": {
+    "slug": "a-propos",
+    "titre": "À propos",
+    "contenu": "Minivers est un parc de loisirs dédié aux enfants. Bienvenue !",
+    "publiee": true
+  }
+},
+{
+  "model": "main.page",
+  "pk": 2,
+  "fields": {
+    "slug": "infos-pratiques",
+    "titre": "Infos pratiques",
+    "contenu": "Retrouvez ici les horaires, les tarifs et le plan d'accès.",
+    "publiee": true
+  }
+},
+{
+  "model": "main.newsitem",
+  "pk": 1,
+  "fields": {
+    "titre": "Ouverture de la saison printanière",
+    "date": "2026-04-04",
+    "contenu": "Le parc rouvre ses portes le 4 avril avec deux nouvelles attractions.",
+    "image": ""
+  }
+},
+{
+  "model": "main.newsitem",
+  "pk": 2,
+  "fields": {
+    "titre": "Nuit du parc",
+    "date": "2026-07-11",
+    "contenu": "Soirée spéciale nocturne avec spectacles et buvette.",
+    "image": ""
+  }
+},
+{
+  "model": "main.horaire",
+  "pk": 1,
+  "fields": {
+    "jour": "Lundi",
+    "ouverture": null,
+    "fermeture": null,
+    "fermeture_exceptionnelle": false
+  }
+},
+{
+  "model": "main.horaire",
+  "pk": 2,
+  "fields": {
+    "jour": "Mardi",
+    "ouverture": "10:00:00",
+    "fermeture": "18:00:00",
+    "fermeture_exceptionnelle": false
+  }
+},
+{
+  "model": "main.horaire",
+  "pk": 3,
+  "fields": {
+    "jour": "Mercredi",
+    "ouverture": "10:00:00",
+    "fermeture": "18:00:00",
+    "fermeture_exceptionnelle": false
+  }
+},
+{
+  "model": "main.horaire",
+  "pk": 4,
+  "fields": {
+    "jour": "Jeudi",
+    "ouverture": "10:00:00",
+    "fermeture": "18:00:00",
+    "fermeture_exceptionnelle": false
+  }
+},
+{
+  "model": "main.horaire",
+  "pk": 5,
+  "fields": {
+    "jour": "Vendredi",
+    "ouverture": "10:00:00",
+    "fermeture": "18:00:00",
+    "fermeture_exceptionnelle": false
+  }
+},
+{
+  "model": "main.horaire",
+  "pk": 6,
+  "fields": {
+    "jour": "Samedi",
+    "ouverture": "10:00:00",
+    "fermeture": "19:00:00",
+    "fermeture_exceptionnelle": false
+  }
+},
+{
+  "model": "main.horaire",
+  "pk": 7,
+  "fields": {
+    "jour": "Dimanche",
+    "ouverture": "10:00:00",
+    "fermeture": "19:00:00",
+    "fermeture_exceptionnelle": false
+  }
+},
+{
+  "model": "main.tarif",
+  "pk": 1,
+  "fields": {
+    "nom": "Enfant (3-12 ans)",
+    "description": "Accès illimité aux attractions pour les enfants de 3 à 12 ans.",
+    "prix": "9.50",
+    "ordre": 1
+  }
+},
+{
+  "model": "main.tarif",
+  "pk": 2,
+  "fields": {
+    "nom": "Adulte",
+    "description": "Accès illimité aux attractions, accompagnateur inclus.",
+    "prix": "12.00",
+    "ordre": 2
+  }
+},
+{
+  "model": "main.tarif",
+  "pk": 3,
+  "fields": {
+    "nom": "Moins de 3 ans",
+    "description": "Entrée gratuite pour les moins de 3 ans.",
+    "prix": "0.00",
+    "ordre": 3
+  }
+}
+]
