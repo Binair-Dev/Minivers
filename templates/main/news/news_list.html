@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Actualités — Minivers{% endblock %}
+
+{% block content %}
+
+<!-- NAV -->
+<nav>
+<a href="/" class="logo">Mini<span>vers</span></a>
+<ul>
+<li><a href="/#comment">Comment ça marche</a></li>
+<li><a href="/#activites">Parc</a></li>
+<li><a href="/#tarifs">Tarifs</a></li>
+<li><a href="/#anniversaires">Anniversaires</a></li>
+<li><a href="/#evenements">Agenda</a></li>
+<li><a href="/#boutique">Boutique</a></li>
+<li><a href="/#contact">Contact</a></li>
+</ul>
+<div class="nav-right">
+<a href="/#tarifs" class="btn-resa" style="text-decoration:none">Réserver</a>
+</div>
+</nav>
+
+<!-- ACTUALITES -->
+<section class="section full-sec" id="actualites">
+<h2 class="stitle">Actualités</h2>
+<p class="stitle-sub">Les dernières nouvelles du parc, en direct.</p>
+
+{% if page_obj.object_list %}
+<div class="news-grid">
+{% for news in page_obj %}
+<article class="news-card">
+{% if news.image %}
+<div class="news-img" style="background-image:url('{{ news.image.url }}');background-size:cover;background-position:center">
+{% else %}
+<div class="news-img" style="background:linear-gradient(120deg,var(--violet),var(--turquoise))">
+{% endif %}
+<span class="news-date">{{ news.date|date:"d/m/Y" }}</span>
+</div>
+<div class="ev-body">
+<h3>{{ news.titre }}</h3>
+<p>{{ news.contenu|truncatechars:120 }}</p>
+<a class="news-link" href="{% url 'main:news_detail' news.pk news.titre|slugify %}">Lire la suite →</a>
+</div>
+</article>
+{% endfor %}
+</div>
+
+{% if paginator.num_pages > 1 %}
+<div class="pagination">
+{% if page_obj.has_previous %}
+<a href="?page={{ page_obj.previous_page_number }}">← Précédent</a>
+{% endif %}
+<span class="pag-label">Page {{ page_obj.number }} sur {{ paginator.num_pages }}</span>
+{% if page_obj.has_next %}
+<a href="?page={{ page_obj.next_page_number }}">Suivant →</a>
+{% endif %}
+</div>
+{% endif %}
+
+{% else %}
+<p class="empty-msg">Aucune actualité pour le moment. Revenez bientôt !</p>
+{% endif %}
+</section>
+
+<div class="color-bar"><span style="background:var(--rose)"></span><span style="background:var(--turquoise)"></span><span style="background:var(--jaune)"></span><span style="background:var(--violet)"></span></div>
+
+<!-- FOOTER -->
+<footer>
+<div style="margin-bottom:16px"><a href="/" class="logo" style="font-size:1.8rem;color:#fff">Mini<span>vers</span></a></div>
+<p>Parc Indoor & Boutique de Jeux — Le Crès, Montpellier</p>
+<div class="flink">
+<a href="/">Accueil</a><a href="{% url 'main:news_list' %}">Actualités</a><a href="/#tarifs">Tarifs</a><a href="/#contact">Contact</a>
+</div>
+<p style="margin-top:20px;font-size:.78rem">&copy; 2026 Minivers — Tous droits réservés</p>
+</footer>
+
+{% endblock %}

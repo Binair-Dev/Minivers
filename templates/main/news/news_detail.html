@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ news.titre }} — Actualités — Minivers{% endblock %}
+
+{% block content %}
+
+<!-- NAV -->
+<nav>
+<a href="/" class="logo">Mini<span>vers</span></a>
+<ul>
+<li><a href="/#comment">Comment ça marche</a></li>
+<li><a href="/#activites">Parc</a></li>
+<li><a href="/#tarifs">Tarifs</a></li>
+<li><a href="/#anniversaires">Anniversaires</a></li>
+<li><a href="/#evenements">Agenda</a></li>
+<li><a href="/#boutique">Boutique</a></li>
+<li><a href="/#contact">Contact</a></li>
+</ul>
+<div class="nav-right">
+<a href="/#tarifs" class="btn-resa" style="text-decoration:none">Réserver</a>
+</div>
+</nav>
+
+<!-- ACTUALITE -->
+<section class="section full-sec" id="actualite-detail">
+<article class="news-detail">
+{% if news.image %}
+<div class="news-img news-img-large" style="background-image:url('{{ news.image.url }}');background-size:cover;background-position:center">
+{% else %}
+<div class="news-img news-img-large" style="background:linear-gradient(120deg,var(--violet),var(--turquoise))">
+{% endif %}
+<span class="news-date">{{ news.date|date:"d F Y" }}</span>
+</div>
+<div class="news-detail-body">
+<h2 class="stitle">{{ news.titre }}</h2>
+<div class="news-contenu">
+{% for ligne in news.contenu.splitlines %}{% if ligne %}<p>{{ ligne }}</p>{% endif %}{% endfor %}
+</div>
+<p style="text-align:center;margin-top:28px">
+<a class="news-link" href="{% url 'main:news_list' %}">← Toutes les actualités</a>
+</p>
+</div>
+</article>
+</section>
+
+<div class="color-bar"><span style="background:var(--rose)"></span><span style="background:var(--turquoise)"></span><span style="background:var(--jaune)"></span><span style="background:var(--violet)"></span></div>
+
+<!-- FOOTER -->
+<footer>
+<div style="margin-bottom:16px"><a href="/" class="logo" style="font-size:1.8rem;color:#fff">Mini<span>vers</span></a></div>
+<p>Parc Indoor & Boutique de Jeux — Le Crès, Montpellier</p>
+<div class="flink">
+<a href="/">Accueil</a><a href="{% url 'main:news_list' %}">Actualités</a><a href="/#tarifs">Tarifs</a><a href="/#contact">Contact</a>
+</div>
+<p style="margin-top:20px;font-size:.78rem">&copy; 2026 Minivers — Tous droits réservés</p>
+</footer>
+
+{% endblock %}
