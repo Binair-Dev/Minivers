@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Infos pratiques — Minivers{% endblock %}
+
+{% block content %}
+
+<!-- INFOS PRATIQUES -->
+<section class="section full-sec" id="infos-pratiques">
+<h2 class="stitle">Infos Pratiques</h2>
+<p class="stitle-sub">{% if page %}{{ page.contenu }}{% else %}Tout ce qu'il faut savoir avant votre venue.{% endif %}</p>
+
+<!-- HORAIRES -->
+<div class="infos-block">
+<h3 class="infos-h3">🕒 Horaires d'ouverture</h3>
+{% if has_horaires %}
+<div class="horaires-table">
+{% for horaire in horaires %}
+<div class="horaire-row">
+<span class="horaire-jour">{{ horaire.get_jour_display }}</span>
+{% if horaire.fermeture_exceptionnelle %}
+<span class="horaire-heures ferme">Fermé</span>
+{% elif horaire.ouverture and horaire.fermeture %}
+<span class="horaire-heures">{{ horaire.ouverture|time:"H\\hi" }} — {{ horaire.fermeture|time:"H\\hi" }}</span>
+{% else %}
+<span class="horaire-heures ferme">Fermé</span>
+{% endif %}
+</div>
+{% endfor %}
+</div>
+{% else %}
+<p class="empty-msg">Les horaires d'ouverture ne sont pas encore disponibles. Revenez bientôt !</p>
+{% endif %}
+</div>
+
+<!-- TARIFS -->
+<div class="infos-block">
+<h3 class="infos-h3">🎟️ Nos tarifs</h3>
+{% if has_tarifs %}
+<div class="pricing">
+{% for tarif in tarifs %}
+<div class="pcard">
+<div class="plabel">{{ tarif.nom }}</div>
+<div class="pval">{% if tarif.prix == 0 %}Gratuit{% else %}{{ tarif.prix|floatformat:2 }} €{% endif %}</div>
+{% if tarif.description %}<div class="pdesc">{{ tarif.description }}</div>{% endif %}
+</div>
+{% endfor %}
+</div>
+{% else %}
+<p class="empty-msg">La grille tarifaire n'est pas encore disponible. Revenez bientôt !</p>
+{% endif %}
+</div>
+
+<div class="notice" style="margin-top:24px;max-width:640px;margin-left:auto;margin-right:auto">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D3436" stroke-width="2.5"><path d="M4 2h12v10l2 4a3 3 0 01-3 3H9a3 3 0 01-3-3V2z"/></svg>
+Chaussettes antidérapantes obligatoires (accompagnants et enfants) — vendues sur place (2 €/paire).
+</div>
+</section>
+
+<div class="color-bar"><span style="background:var(--rose)"></span><span style="background:var(--turquoise)"></span><span style="background:var(--jaune)"></span><span style="background:var(--violet)"></span></div>
+
+<!-- FOOTER -->
+<footer>
+<div style="margin-bottom:16px"><a href="/" class="logo" style="font-size:1.8rem;color:#fff">Mini<span>vers</span></a></div>
+<p>Parc Indoor & Boutique de Jeux — Le Crès, Montpellier</p>
+<div class="flink">
+<a href="/">Accueil</a><a href="/#tarifs">Tarifs</a><a href="/#boutique">Boutique</a><a href="/#contact">Contact</a>
+</div>
+<p style="margin-top:20px;font-size:.78rem">&copy; 2026 Minivers — Tous droits réservés</p>
+</footer>
+
+{% endblock %}

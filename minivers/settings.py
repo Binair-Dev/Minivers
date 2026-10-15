@@ -1,12 +1,20 @@
 """
 Django settings for minivers project.
 
-All deployment-tunable values are read from environment variables (see .env.example).
-A SQLite fallback is used when no DB credentials are provided, so the project
-still runs locally without any setup.
+All deployment-tunable values are read from environment variables (see
+.env.example). A SQLite fallback is used when DB_ENGINE is not set, so the
+project still runs locally without any setup.
+
+Production posture:
+  * DEBUG defaults to False (fail-safe).
+  * WhiteNoise serves static files straight from STATIC_ROOT; set
+    DJANGO_WHITENOISE=false in dev to keep runserver simple (no
+    collectstatic needed, no hashed asset names).
+  * Secrets never live in git — only .env.example is committed.
 """
 
 import os
+import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -58,7 +66,7 @@ def env_path(key: str, default: Path) -> Path:
 # --- Core --------------------------------------------------------------------
 
 SECRET_KEY = env("DJANGO_SECRET_KEY", "django-insecure-dev-key-change-me")
-DEBUG = env_bool("DJANGO_DEBUG", default=True)
+DEBUG = env_bool("DJANGO_DEBUG", default=False)
 ALLOWED_HOSTS = [h.strip() for h in env("DJANGO_ALLOWED_HOSTS", "*").split(",") if h.strip()]
 
 
@@ -76,6 +84,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    # Serves the collected static files in production (see STORAGES below).
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -108,9 +118,9 @@ ASGI_APPLICATION = "minivers.asgi.application"
 
 # --- Database ----------------------------------------------------------------
 #
-# When DB_* variables are set (e.g. in docker-compose) we use PostgreSQL.
-# Otherwise we fall back to SQLite so the project still runs with `manage.py
-# runserver` on a fresh checkout, no env file needed.
+# DB_ENGINE selects the backend: "postgres" in production / docker, or "sqlite"
+# (the default) so the project still runs with `manage.py runserver` on a fresh
+# checkout, no env file needed.
 
 _db_engine = env("DB_ENGINE", "sqlite")
 
@@ -156,4 +166,51 @@ STATIC_ROOT = env_path("STATIC_ROOT", BASE_DIR / "staticfiles")
 MEDIA_URL = env("MEDIA_URL", "media/")
 MEDIA_ROOT = env_path("MEDIA_ROOT", BASE_DIR / "media")
 
+# WhiteNoise can be turned off for plain local dev (DJANGO_WHITENOISE=false):
+# the default staticfiles storage then keeps un-hashed names and runserver
+# needs no collectstatic. In the docker-compose stack WhiteNoise stays on and
+# the entrypoint runs collectstatic at every start, which CompressedManifest-
+# StaticFilesStorage requires.
+_WHITENOISE = env_bool("DJANGO_WHITENOISE", default=True)
+
+if _WHITENOISE:
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# --- Deployment hardening (only meaningful when DEBUG is off) ----------------
+
+if not DEBUG:
+    # Sessions and CSRF cookies over HTTPS only in production. Each can be
+    # relaxed with an env var for plain-HTTP staging setups.
+    SESSION_COOKIE_SECURE = env_bool("DJANGO_SESSION_COOKIE_SECURE", True)
+    CSRF_COOKIE_SECURE = env_bool("DJANGO_CSRF_COOKIE_SECURE", True)
+
+    # Trust X-Forwarded-Proto behind a reverse proxy / TLS terminator.
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+    # WhiteNoise with the manifest storage needs STATIC_ROOT populated at
+    # import time. Fail loudly when actually serving rather than rendering a
+    # page full of broken asset links. Management commands (migrate, test,
+    # collectstatic...) are exempt — under Docker the entrypoint runs
+    # collectstatic only after migrate.
+    _serving = any(
+        a.endswith(("gunicorn", "uwsgi", "daphne")) or a == "runserver"
+        for a in sys.argv
+    )
+    if _WHITENOISE and _serving:
+        _static_root = Path(STATIC_ROOT)
+        if not (_static_root / "staticfiles.json").is_file():
+            raise RuntimeError(
+                f"STATIC_ROOT ({_static_root}) is missing staticfiles.json — "
+                "run `python manage.py collectstatic` before serving with "
+                "WhiteNoise."
+            )
