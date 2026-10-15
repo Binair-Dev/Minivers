@@ -45,7 +45,18 @@ default: check
     {{ python }} scripts/visual_diff.py --open
 
 # CI locale : tests + diff visuel.
+# IMPORTANT : la DB doit avoir migrations + fixture (sinon la home Django lève
+# une 500 « no such table » capturée comme diff 100 %). Bootstrap :
+#   just bootstrap
 check: test visual-check
+
+# Prépare une DB locale (migrations + fixtures de démo) pour le diff visuel.
+@bootstrap:
+    #!/usr/bin/env bash
+    if [ -n "{{ db }}" ]; then export DB_NAME="{{ db }}"; fi
+    if [ -z "$DB_NAME" ]; then echo "ERREUR : définis MINIVERS_DB_NAME=/chemin/local.db (SQLite interdit sur CIFS)." >&2; exit 1; fi
+    {{ python }} manage.py migrate --noinput
+    {{ python }} manage.py loaddata demo
 
 # Supprime les artefacts visuels générés.
 clean:
