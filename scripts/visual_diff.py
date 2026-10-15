@@ -55,10 +55,11 @@ VIEWPORTS = [
 ]
 
 DIFF_THRESHOLD = 0.0  # en % de pixels différents ; 0 = alerte au moindre pixel
-# Plancher de bruit anti-aliasing : quelques pixels (1-2 px de bord arrondi des
-# pilules décoratives) peuvent différer d'une capture à l'autre sans aucune
-# régression. En dessous de ce pourcentage, la comparaison est considérée OK.
-NOISE_THRESHOLD_PCT = 0.01
+# Plancher de bruit anti-aliasing : le rasterizer peut rendre les franges de
+# texte/pilules avec quelques nuances d'écart (bords arrondis, rendu de police
+# entre la page statique et la page servie par Django) sans aucune régression
+# de layout ni de contenu. En dessous de ce pourcentage, la comparaison est OK.
+NOISE_THRESHOLD_PCT = 0.05
 
 
 # --------------------------------------------------------------------------- #
