@@ -1,17 +1,77 @@
-<!DOCTYPE html>
+{% load static %}<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-{% load static %}
-{% block head %}
 <title>{% block title %}Minivers — Parc Indoor Enfants & Boutique de Jeux{% endblock %}</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'css/main.css' %}">
-{% endblock %}
+{% block head %}{% endblock %}
 </head>
 <body>
+
+{% block header %}
+<nav>
+<a href="#" class="logo">Mini<span>vers</span></a>
+<ul>
+<li><a href="#comment">Comment ça marche</a></li>
+<li><a href="#activites">Parc</a></li>
+<li><a href="#tarifs">Tarifs</a></li>
+<li><a href="#anniversaires">Anniversaires</a></li>
+<li><a href="#evenements">Agenda</a></li>
+<li><a href="#boutique">Boutique</a></li>
+<li><a href="#contact">Contact</a></li>
+</ul>
+<div class="nav-right">
+<button class="btn-cart" onclick="toggleCart()">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+<span class="cart-count" id="cartCount">0</span>
+</button>
+<button class="btn-resa" onclick="toggleCart()">Réserver</button>
+</div>
+</nav>
+<div class="sock-banner" id="sockBanner">
+<svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+Chaussettes antidérapantes obligatoires — vendues sur place (2 €/paire)
+</div>
+
+{% endblock %}
+
 {% block content %}{% endblock %}
-{% block extra_js %}{% endblock %}
+
+{% block footer %}
+<footer>
+<div style="margin-bottom:16px"><a href="#" class="logo" style="font-size:1.8rem;color:#fff">Mini<span>vers</span></a></div>
+<p>Parc Indoor & Boutique de Jeux — Le Crès, Montpellier</p>
+<div class="flink">
+<a href="#">Accueil</a><a href="#">Parc</a><a href="#">Tarifs</a><a href="#">Boutique</a><a href="#">Anniversaires</a><a href="#">Agenda</a><a href="#">Mentions légales</a>
+</div>
+<div class="nl"><input placeholder="Votre email..." type="email"><button>Newsletter</button></div>
+<p style="margin-top:8px;font-size:.78rem;opacity:.4">Newsletter 1 à 2 fois par mois — événements et offres du moment</p>
+<p style="margin-top:20px;font-size:.78rem">&copy; 2026 Minivers — Tous droits réservés</p>
+</footer>
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+<div class="cart-header"><h3>Votre réservation</h3><button class="cart-close" onclick="toggleCart()">&times;</button></div>
+<div class="cart-body" id="cartBody">
+<div class="cart-empty" id="cartEmpty">
+<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="1.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+<p>Votre panier est vide</p>
+</div>
+<div id="cartItems"></div>
+</div>
+<div class="cart-footer">
+<div class="cart-sock">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2D3436" stroke-width="2.5"><path d="M4 2h12v10l2 4a3 3 0 01-3 3H9a3 3 0 01-3-3V2z"/></svg>
+Rappel : chaussettes antidérapantes obligatoires !
+</div>
+<div class="cart-total"><span>Total</span><span id="cartTotal">0€</span></div>
+<button class="btn-val" onclick="validateCart()">Valider ma réservation</button>
+</div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}{% endblock %}
 </body>
 </html>
