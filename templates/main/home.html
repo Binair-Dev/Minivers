@@ -5,8 +5,6 @@
 <!-- CHAUSSETTES BANNER -->
 
 
-
-
 <!-- HERO -->
 <section class="hero">
 <h1>Bienvenue au Minivers !</h1>
@@ -193,9 +191,20 @@
 <section class="section full-sec" id="evenements">
 <h2 class="stitle">Agenda du mois</h2>
 <p class="stitle-sub">Ateliers, booms et animations spéciales — tous les événements du mois !</p>
+{% if dernieres_actualites %}
+<div class="events-grid">
+{% for actu in dernieres_actualites %}
+<div class="event">
+{% if actu.image %}<div class="event-img" style="background-image:url('{{ actu.image.url }}');background-size:cover;background-position:center">{% else %}<div class="event-img" style="background:linear-gradient(135deg,#FFB5C2,#C3A6FF)">{% endif %}<span class="event-label">{{ actu.date|date:"d/m/Y" }}</span></div>
+<div class="ev-body"><div class="ev-date">{{ actu.date|date:"l d F Y" }}</div><h3>{{ actu.titre }}</h3><p>{{ actu.contenu|linebreaksbr }}</p></div>
+</div>
+{% endfor %}
+</div>
+{% else %}
 <div class="events-grid">
 <div class="event"><div class="event-img" style="background-image:url('{% static 'img/events/event01.webp' %}');background-size:cover;background-position:center"><span class="event-label">Super Heros</span></div><div class="ev-body"><div class="ev-date">Samedi 21 Juin 2026</div><h3>Journee Super Heros</h3><p>Deguisements, challenges et rencontres avec vos heros preferes !</p></div></div><div class="event"><div class="event-img" style="background-image:url('{% static 'img/events/event02.webp' %}');background-size:cover;background-position:center"><span class="event-label">Nuit Etoilee</span></div><div class="ev-body"><div class="ev-date">Vendredi 4 Juillet 2026</div><h3>Nuit au Parc</h3><p>Soiree magique avec jeux lumineux, contes et gouter de minuit.</p></div></div><div class="event"><div class="event-img" style="background-image:url('{% static 'img/events/event03.webp' %}');background-size:cover;background-position:center"><span class="event-label">Carnaval</span></div><div class="ev-body"><div class="ev-date">Mercredi 16 Juillet 2026</div><h3>Carnaval Geant</h3><p>Concours de deguisements, parade et surprises pour tous !</p></div></div>
 </div>
+{% endif %}
 </section>
 
 <div class="wave"><svg viewBox="0 0 1440 70"><path fill="var(--bg)" d="M0,30 C360,0 720,60 1080,20 C1260,0 1380,40 1440,20 L1440,70 L0,70Z"/></svg></div>

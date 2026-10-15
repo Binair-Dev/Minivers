@@ -1,4 +1,4 @@
-{% load static %}<!DOCTYPE html>
+{% load static nav %}<!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
@@ -11,27 +11,7 @@
 <body>
 
 {% block header %}
-<nav>
-<a href="#" class="logo">Mini<span>vers</span></a>
-<ul>
-<li><a href="#comment">Comment ça marche</a></li>
-<li><a href="#activites">Parc</a></li>
-<li><a href="#tarifs">Tarifs</a></li>
-<li><a href="#anniversaires">Anniversaires</a></li>
-<li><a href="#evenements">Agenda</a></li>
-<!-- TODO(boutique): la boutique sortira en projet séparé — remplacer ce
-     placeholder par l'URL du site boutique quand il existera. -->
-<li><a href="#">Boutique</a></li>
-<li><a href="#contact">Contact</a></li>
-</ul>
-<div class="nav-right">
-<button class="btn-cart" onclick="toggleCart()">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
-<span class="cart-count" id="cartCount">0</span>
-</button>
-<button class="btn-resa" onclick="toggleCart()">Réserver</button>
-</div>
-</nav>
+{% nav %}
 <div class="sock-banner" id="sockBanner">
 <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
 Chaussettes antidérapantes obligatoires — vendues sur place (2 €/paire)

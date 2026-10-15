@@ -6,9 +6,23 @@ from django.template.defaultfilters import slugify
 
 from .models import Horaire, NewsItem, Page, Tarif
 
+# Nombre d'actualités affichées sur la page d'accueil.
+NB_ACTUALITES_HOME = 3
+
 
 def home(request):
-    return render(request, "main/home.html")
+    """Accueil : dernière section alimentée par les actualités (modèles).
+
+    Si aucune actualité n'existe (base vide), le mock statique est conservé
+    afin que la page ne soit jamais vide.
+    """
+    dernieres_actualites = NewsItem.objects.all()[:NB_ACTUALITES_HOME]
+
+    return render(
+        request,
+        "main/home.html",
+        {"dernieres_actualites": dernieres_actualites},
+    )
 
 
 def boutique(request):
