@@ -126,6 +126,18 @@ def _wait_for_port(port: int, timeout: float = 15.0) -> bool:
 # Captures
 # --------------------------------------------------------------------------- #
 
+# CSS injecté avant capture : fige les animations/pulses CSS (cylPulse, …) qui
+# rendraient deux captures successives non reproductibles (opacité/scale figés
+# à une phase aléatoire au moment du screenshot).
+FREEZE_ANIMATIONS_CSS = """
+*, *::before, *::after {
+    animation-play-state: paused !important;
+    animation-delay: 0s !important;
+    transition: none !important;
+}
+"""
+
+
 def capture_all(base_url: str, out_dir: Path, pages: list[tuple[str, str]]) -> None:
     from playwright.sync_api import sync_playwright
 
@@ -138,8 +150,10 @@ def capture_all(base_url: str, out_dir: Path, pages: list[tuple[str, str]]) -> N
                 try:
                     page.goto(f"{base_url}{path}", wait_until="networkidle")
                     # Les Google Fonts / animations peuvent décaler le rendu :
-                    # on force le scroll en haut et on laisse les fontes se charger.
+                    # on force le scroll en haut, on fige les animations CSS
+                    # et on laisse les fontes se charger.
                     page.evaluate("window.scrollTo(0, 0)")
+                    page.add_style_tag(content=FREEZE_ANIMATIONS_CSS)
                     page.wait_for_timeout(400)
                     page.screenshot(
                         path=str(out_dir / f"{Path(name).stem}.{vp_name}.png"),
