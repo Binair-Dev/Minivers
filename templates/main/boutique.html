@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Minivers — Boutique{% endblock %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static 'css/boutique.css' %}">
+{% endblock %}
+
+{% block header %}
+<!-- NAV — variante boutique du mock (logo « Boutique », ancres locales) ;
+     le socle commun (structure nav, styles, panier) reste factorisé dans
+     base.html + main.css. TODO(boutique): quand la boutique sortira en
+     projet séparé, remplacer les ancres ci-dessous par ses URLs propres. -->
+<nav>
+<a href="#top" class="logo">Mini<span>vers</span> <span style="color:var(--violet);font-size:1rem;font-weight:700">Boutique</span></a>
+<ul>
+<li><a href="#filters" style="color:var(--violet)">Catégories</a></li>
+<li><a href="#promo">Promotions</a></li>
+<li><a href="#contact-boutique">Contact</a></li>
+</ul>
+<div class="nav-right">
+<button class="btn-cart" onclick="toggleCart()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg><span class="cart-count" id="cartCount">0</span></button>
+<button style="background:var(--rose);color:#fff;border:none;padding:10px 20px;border-radius:50px;font-weight:700;font-size:.9rem" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='none'">Mon panier</button>
+</div>
+</nav>
+<a id="top"></a>
+{% endblock %}
+
+{% block content %}
+<div class="color-bar"><span style="background:var(--rose)"></span><span style="background:var(--turquoise)"></span><span style="background:var(--jaune)"></span><span style="background:var(--violet)"></span></div>
+
+<section class="boutique-hero">
+<h1>Notre <span>Boutique</span></h1>
+<p>Jouets, jeux et accessoires pour nourrir l'imagination et la créativité des enfants de 0 à 12 ans.</p>
+<div class="boutique-search"><input type="text" id="searchInput" placeholder="🔍 Rechercher un jeu ou un univers..."></div>
+<div class="cyl-signature" aria-label="Nos univers">
+<div class="cyl" style="background:var(--rose);width:80px"></div><div class="cyl" style="background:var(--turquoise);width:120px"></div><div class="cyl" style="background:var(--jaune);width:60px"></div><div class="cyl" style="background:var(--violet);width:100px"></div><div class="cyl" style="background:var(--bleu);width:75px"></div><div class="cyl" style="background:var(--orange);width:90px"></div><div class="cyl" style="background:var(--rose);width:55px"></div>
+</div>
+<div class="cyl-tag"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l2 2"/></svg>7 univers de jeu · 100% amusement</div>
+</section>
+
+<div class="boutique-filters" id="filters">
+<button class="filter-chip active" data-cat="all">Tout <span class="chip-count">(14)</span></button>
+<button class="filter-chip" data-cat="imitation">Jeu d'imitation <span class="chip-count">(5)</span></button>
+<button class="filter-chip" data-cat="construction">Construction <span class="chip-count">(3)</span></button>
+<button class="filter-chip" data-cat="creatif">Créatif <span class="chip-count">(3)</span></button>
+<button class="filter-chip" data-cat="moteur">Motricité <span class="chip-count">(3)</span></button>
+<button class="filter-chip" data-cat="favorites">❤️ Favoris <span class="chip-count">(0)</span></button>
+</div>
+
+<div class="shop-promo" id="promo">
+<div class="shop-promo-text"><h3>🎁 -15% dès 2 articles achetés</h3><p>Et -25% dès 3 articles ! Offre valable toute l'année en boutique.</p></div>
+<button class="shop-promo-btn">Voir les conditions</button>
+</div>
+
+<section class="shop-section">
+<div class="shop-grid" id="shopGrid">
+
+<div class="product" data-cat="imitation" data-name="Coffre Chantier Complet">
+<div class="product-img pi-chantier">👷<button class="btn-like" data-name="Coffre Chantier Complet"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Imitation</div><h3>Coffre Chantier Complet</h3>
+<p class="product-desc">Casque, outils, ceinture et gilet fluo. Devient un vrai chef de chantier !</p>
+<div class="product-age">👶 3-8 ans</div>
+<div class="product-footer"><div class="product-price">24,90€</div><button class="product-btn" data-action="cart" data-name="Coffre Chantier Complet" data-price="24.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="imitation" data-name="Kit Police & Menottes">
+<div class="product-img pi-police">👮<button class="btn-like" data-name="Kit Police & Menottes"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<span class="product-badge badge-new">Nouveau</span>
+<div class="product-body">
+<div class="product-cat">Imitation</div><h3>Kit Police & Menottes</h3>
+<p class="product-desc">Badge, plaque, talkie-walkie et menottes en plastique sécurisé.</p>
+<div class="product-age">👶 4-10 ans</div>
+<div class="product-footer"><div class="product-price">19,90€</div><button class="product-btn" data-action="cart" data-name="Kit Police & Menottes" data-price="19.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="imitation" data-name="Camion Pompier Lumineux">
+<div class="product-img pi-pompier">🚒<button class="btn-like" data-name="Camion Pompier Lumineux"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Imitation</div><h3>Camion Pompier Lumineux</h3>
+<p class="product-desc">Camion avec sirènes, lumières et lance à eau fonctionnelle.</p>
+<div class="product-age">👶 3-8 ans</div>
+<div class="product-footer"><div class="product-price">34,90€</div><button class="product-btn" data-action="cart" data-name="Camion Pompier Lumineux" data-price="34.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="imitation" data-name="Coiffeuse Mini-Studio">
+<div class="product-img pi-relooking">💇<button class="btn-like" data-name="Coiffeuse Mini-Studio"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<span class="product-badge badge-promo">-20%</span>
+<div class="product-body">
+<div class="product-cat">Imitation</div><h3>Coiffeuse Mini-Studio</h3>
+<p class="product-desc">Miroir, sèche-cheveux sonore, peignes et accessoires de relooking.</p>
+<div class="product-age">👶 3-9 ans</div>
+<div class="product-footer"><div class="product-price">27,90€ <small>34,90€</small></div><button class="product-btn" data-action="cart" data-name="Coiffeuse Mini-Studio" data-price="27.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="imitation" data-name="Épicerie Marchande">
+<div class="product-img pi-epicerie">🏪<button class="btn-like" data-name="Épicerie Marchande"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Imitation</div><h3>Épicerie Marchande</h3>
+<p class="product-desc">Caisse sonore, Scanner, panier et 25 produits en bois. Prêt à vendre !</p>
+<div class="product-age">👶 3-10 ans</div>
+<div class="product-footer"><div class="product-price">39,90€</div><button class="product-btn" data-action="cart" data-name="Épicerie Marchande" data-price="39.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="construction" data-name="Boîte Briques 200 pcs">
+<div class="product-img pi-garage">🔧<button class="btn-like" data-name="Boîte Briques 200 pcs"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<span class="product-badge badge-coup">Coup de cœur</span>
+<div class="product-body">
+<div class="product-cat">Construction</div><h3>Boîte Briques 200 pcs</h3>
+<p class="product-desc">200 briques colorées compatibles LEGO. Créer sans limites.</p>
+<div class="product-age">👶 4-12 ans</div>
+<div class="product-footer"><div class="product-price">29,90€</div><button class="product-btn" data-action="cart" data-name="Boîte Briques 200 pcs" data-price="29.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="construction" data-name="Kit Engrenages Motorisés">
+<div class="product-img pi-garage">🧱<button class="btn-like" data-name="Kit Engrenages Motorisés"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Construction</div><h3>Kit Engrenages Motorisés</h3>
+<p class="product-desc">80 pièces pour créer des machines à engrenages qui tournent vraiment.</p>
+<div class="product-age">👶 5-12 ans</div>
+<div class="product-footer"><div class="product-price">32,90€</div><button class="product-btn" data-action="cart" data-name="Kit Engrenages Motorisés" data-price="32.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="construction" data-name="Forteresse Magnétique">
+<div class="product-img pi-ocre">🏗️<button class="btn-like" data-name="Forteresse Magnétique"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Construction</div><h3>Forteresse Magnétique</h3>
+<p class="product-desc">60 blocs magnétiques pour construire forteresses et châteaux.</p>
+<div class="product-age">👶 3-10 ans</div>
+<div class="product-footer"><div class="product-price">44,90€</div><button class="product-btn" data-action="cart" data-name="Forteresse Magnétique" data-price="44.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="créatif" data-name="Valise Peinture & Pinceaux">
+<div class="product-img pi-rose">🎨<button class="btn-like" data-name="Valise Peinture & Pinceaux"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<span class="product-badge badge-new">Nouveau</span>
+<div class="product-body">
+<div class="product-cat">Créatif</div><h3>Valise Peinture & Pinceaux</h3>
+<p class="product-desc">24 couleurs, 8 pinceaux, chevalet de table et tablier lavable.</p>
+<div class="product-age">👶 4-12 ans</div>
+<div class="product-footer"><div class="product-price">22,90€</div><button class="product-btn" data-action="cart" data-name="Valise Peinture & Pinceaux" data-price="22.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="créatif" data-name="Atelier Pâte à Modeler XL">
+<div class="product-img pi-relooking">✂️<button class="btn-like" data-name="Atelier Pâte à Modeler XL"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Créatif</div><h3>Atelier Pâte à Modeler XL</h3>
+<p class="product-desc">36 couleurs, moules, emporte-pièces et rouleaux. Sans danger.</p>
+<div class="product-age">👶 3-8 ans</div>
+<div class="product-footer"><div class="product-price">18,90€</div><button class="product-btn" data-action="cart" data-name="Atelier Pâte à Modeler XL" data-price="18.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="créatif" data-name="Kit Perles à Repasser 5000">
+<div class="product-img pi-general">🌈<button class="btn-like" data-name="Kit Perles à Repasser 5000"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Créatif</div><h3>Kit Perles à Repasser 5000</h3>
+<p class="product-desc">5000 perles, 5 modèles, papier cuisson et fermeture de rangement.</p>
+<div class="product-age">👶 5-12 ans</div>
+<div class="product-footer"><div class="product-price">16,90€</div><button class="product-btn" data-action="cart" data-name="Kit Perles à Repasser 5000" data-price="16.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="motricité" data-name="Portique Parcours Moteur">
+<div class="product-img pi-police">🚲<button class="btn-like" data-name="Portique Parcours Moteur"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<span class="product-badge badge-promo">-15%</span>
+<div class="product-body">
+<div class="product-cat">Motricité</div><h3>Portique Parcours Moteur</h3>
+<p class="product-desc">8 modules d'équilibre, rampe, tunnel et slalom modulable.</p>
+<div class="product-age">👶 2-7 ans</div>
+<div class="product-footer"><div class="product-price">59,90€ <small>69,90€</small></div><button class="product-btn" data-action="cart" data-name="Portique Parcours Moteur" data-price="59.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="motricité" data-name="Jeux d'Adresse Anneaux">
+<div class="product-img pi-epicerie">🤹<button class="btn-like" data-name="Jeux d'Adresse Anneaux"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Motricité</div><h3>Jeux d'Adresse Anneaux</h3>
+<p class="product-desc">6 anneaux colorés + piquets réglables. Atelier adresse et visée.</p>
+<div class="product-age">👶 3-8 ans</div>
+<div class="product-footer"><div class="product-price">14,90€</div><button class="product-btn" data-action="cart" data-name="Jeux d'Adresse Anneaux" data-price="14.9">+ Panier</button></div>
+</div></div>
+
+<div class="product" data-cat="motricité" data-name="Tapis d'Éveil Sensoriel">
+<div class="product-img pi-rose">🧸<button class="btn-like" data-name="Tapis d'Éveil Sensoriel"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></button></div>
+<div class="product-body">
+<div class="product-cat">Motricité</div><h3>Tapis d'Éveil Sensoriel</h3>
+<p class="product-desc">8 textures différentes, sonnettes et miroirs sécurisés. Lavable.</p>
+<div class="product-age">👶 0-3 ans</div>
+<div class="product-footer"><div class="product-price">37,90€</div><button class="product-btn" data-action="cart" data-name="Tapis d'Éveil Sensoriel" data-price="37.9">+ Panier</button></div>
+</div></div>
+
+</div>
+</section>
+
+<div class="cyl-row" aria-hidden="true"><div class="cyl" style="background:var(--rose);width:100px"></div><div class="cyl" style="background:var(--jaune);width:70px"></div><div class="cyl" style="background:var(--violet);width:130px"></div><div class="cyl" style="background:var(--turquoise);width:80px"></div></div>
+
+<div class="shop-news">
+<h3>📬 Restez informé !</h3>
+<p>Nouveautés, promotions et idées cadeaux — 1 à 2 emails par mois, jamais plus.</p>
+<form class="shop-news-form" onsubmit="event.preventDefault();alert('Merci ! Vous êtes inscrit(e).')"><input type="email" placeholder="Votre email..." required><button type="submit">S'inscrire</button></form>
+</div>
+
+<section id="contact-boutique" style="max-width:800px;margin:0 auto 60px;padding:32px 24px;background:#fff;border-radius:var(--r);box-shadow:0 4px 20px rgba(0,0,0,.06);text-align:center">
+<h3 style="font-size:1.4rem;margin-bottom:8px">Une question sur un produit ?</h3>
+<p style="color:#636E72;font-size:.92rem;margin-bottom:20px">On vous répond du lundi au samedi, sous 24h.</p>
+<div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center">
+<div style="display:flex;align-items:center;gap:8px;padding:12px 20px;border-radius:50px;background:rgba(78,205,196,.1);color:var(--turquoise);font-weight:700;font-size:.9rem"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>06 52 60 54 59</div>
+<div style="display:flex;align-items:center;gap:8px;padding:12px 20px;border-radius:50px;background:rgba(168,85,247,.1);color:var(--violet);font-weight:700;font-size:.9rem"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>begeault.maeva@gmail.com</div>
+<div style="display:flex;align-items:center;gap:8px;padding:12px 20px;border-radius:50px;background:rgba(255,107,157,.1);color:var(--rose);font-weight:700;font-size:.9rem"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>910 Rte de Nîmes, Le Crès</div>
+</div>
+</section>
+{% endblock %}
+
+{% block footer %}
+<!-- FOOTER — variante boutique du mock (sans bloc newsletter accueil). -->
+<footer>
+<div style="margin-bottom:16px"><a href="#" class="logo" style="font-size:1.8rem;color:#fff">Mini<span>vers</span></a></div>
+<p>Parc Indoor & Boutique de Jeux — Le Crès, Montpellier</p>
+<div class="flink"><a href="#">Accueil</a><a href="#">Parc</a><a href="#">Tarifs</a><a href="#">Boutique</a><a href="#">Anniversaires</a><a href="#">Agenda</a><a href="#">Mentions légales</a></div>
+<p style="margin-top:20px;font-size:.78rem">&copy; 2026 Minivers — Tous droits réservés</p>
+</footer>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/boutique.js' %}"></script>
+{% endblock %}
