@@ -1,8 +1,10 @@
 """Vues du site vitrine Minivers."""
 
-from django.shortcuts import render
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, render
+from django.template.defaultfilters import slugify
 
-from .models import Horaire, Page, Tarif
+from .models import Horaire, NewsItem, Page, Tarif
 
 
 def home(request):
@@ -36,3 +38,33 @@ def infos_pratiques(request):
             "has_tarifs": tarifs.exists(),
         },
     )
+
+
+# === NEWS (t8) ===
+NEWS_PAR_PAGE = 6
+
+
+def news_list(request):
+    """Liste des actualités, triées par date décroissante, 6 par page.
+
+    Une liste vide (ou une page hors limites) affiche un message propre.
+    """
+    items = NewsItem.objects.order_by("-date")
+    paginator = Paginator(items, NEWS_PAR_PAGE)
+    page = paginator.get_page(request.GET.get("page"))
+
+    return render(
+        request,
+        "main/news/news_list.html",
+        {"page_obj": page, "paginator": paginator},
+    )
+
+
+def news_detail(request, pk, slug):
+    """Détail d'une actualité par identifiant + slug dérivé du titre.
+
+    Le slug est purement cosmétique : seule la clé primaire sert à la
+    résolution, ce qui garde les liens stables si le titre est corrigé.
+    """
+    news = get_object_or_404(NewsItem, pk=pk)
+    return render(request, "main/news/news_detail.html", {"news": news})
