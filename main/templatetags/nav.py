@@ -28,6 +28,7 @@ NAV_ITEMS = [
     # placeholder par l'URL du site boutique quand il existera.
     {"label": "Boutique", "url_name": "main:boutique"},
     {"label": "Infos pratiques", "url_name": "main:infos_pratiques"},
+    {"label": "Actualités", "url_name": "main:news_list"},
     {"label": "Contact", "anchor": "contact"},
 ]
 
