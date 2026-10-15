@@ -55,6 +55,11 @@ VIEWPORTS = [
 ]
 
 DIFF_THRESHOLD = 0.0  # en % de pixels différents ; 0 = alerte au moindre pixel
+# Plancher de bruit anti-aliasing : le rasterizer peut rendre les franges de
+# texte/pilules avec quelques nuances d'écart (bords arrondis, rendu de police
+# entre la page statique et la page servie par Django) sans aucune régression
+# de layout ni de contenu. En dessous de ce pourcentage, la comparaison est OK.
+NOISE_THRESHOLD_PCT = 0.05
 
 
 # --------------------------------------------------------------------------- #
@@ -126,6 +131,18 @@ def _wait_for_port(port: int, timeout: float = 15.0) -> bool:
 # Captures
 # --------------------------------------------------------------------------- #
 
+# CSS injecté avant capture : fige les animations/pulses CSS (cylPulse, …) qui
+# rendraient deux captures successives non reproductibles (opacité/scale figés
+# à une phase aléatoire au moment du screenshot).
+FREEZE_ANIMATIONS_CSS = """
+*, *::before, *::after {
+    animation-play-state: paused !important;
+    animation-delay: 0s !important;
+    transition: none !important;
+}
+"""
+
+
 def capture_all(base_url: str, out_dir: Path, pages: list[tuple[str, str]]) -> None:
     from playwright.sync_api import sync_playwright
 
@@ -138,8 +155,10 @@ def capture_all(base_url: str, out_dir: Path, pages: list[tuple[str, str]]) -> N
                 try:
                     page.goto(f"{base_url}{path}", wait_until="networkidle")
                     # Les Google Fonts / animations peuvent décaler le rendu :
-                    # on force le scroll en haut et on laisse les fontes se charger.
+                    # on force le scroll en haut, on fige les animations CSS
+                    # et on laisse les fontes se charger.
                     page.evaluate("window.scrollTo(0, 0)")
+                    page.add_style_tag(content=FREEZE_ANIMATIONS_CSS)
                     page.wait_for_timeout(400)
                     page.screenshot(
                         path=str(out_dir / f"{Path(name).stem}.{vp_name}.png"),
@@ -200,14 +219,15 @@ def _img_b64(path: Path) -> str:
 
 def build_report(results: list[dict]) -> None:
     REPORT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    n_ko = sum(1 for r in results if r["pct"] > DIFF_THRESHOLD)
+    seuil = max(DIFF_THRESHOLD, NOISE_THRESHOLD_PCT)
+    n_ko = sum(1 for r in results if r["pct"] > seuil)
     n_warn = sum(
-        1 for r in results if 0 < r["pct"] <= 5.0 and r["pct"] > DIFF_THRESHOLD
+        1 for r in results if 0 < r["pct"] <= 5.0 and r["pct"] > seuil
     )
 
     cards = []
     for r in results:
-        status = "OK" if r["pct"] <= DIFF_THRESHOLD else "DIFF"
+        status = "OK" if r["pct"] <= max(DIFF_THRESHOLD, NOISE_THRESHOLD_PCT) else "DIFF"
         color = "#1a7f37" if status == "OK" else "#cf222e"
         note_html = (
             f'<p style="color:#9a6700">ℹ {r["note"]}</p>' if r.get("note") else ""
@@ -248,7 +268,7 @@ img {{ max-width: 100%; border: 1px solid #d0d7de; }}
 <div class="summary">
   <strong>{len(results)}</strong> comparaisons —
   <strong style="color:#cf222e">{n_ko} en diff</strong>
-  (seuil : {DIFF_THRESHOLD} %). Généré le {time.strftime('%Y-%m-%d %H:%M:%S')}.
+  (seuil : {seuil:.2f} %). Généré le {time.strftime('%Y-%m-%d %H:%M:%S')}.
 </div>
 {''.join(cards)}
 </body></html>"""
@@ -263,6 +283,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--capture-only", action="store_true",
                         help="génère uniquement les captures de référence (mocks)")
+    parser.add_argument("--refresh-refs", action="store_true",
+                        help="re-capture les mocks de référence avant le diff "
+                             "(par défaut, les références committées sont utilisées)")
     parser.add_argument("--diff-only", action="store_true",
                         help="ne re-capture pas la version Django, diff uniquement")
     parser.add_argument("--open", action="store_true",
@@ -272,11 +295,13 @@ def main() -> int:
     print(f"Références : {REFERENCE_DIR}")
     print(f"Rapport    : {REPORT_PATH}")
 
-    # 1. Captures de référence (mocks statiques)
-    with _StaticServer(BASE_DIR) as static_srv:
-        print(f"Capture des mocks sur http://127.0.0.1:{static_srv.port}/ ...")
-        capture_all(f"http://127.0.0.1:{static_srv.port}", REFERENCE_DIR,
-                    [(m, "/" + m) for m, _ in PAGES])
+    # 1. Captures de référence (mocks statiques), sauf en mode diff simple :
+    # par défaut on compare aux références committées (reproductibilité CI).
+    if args.capture_only or args.refresh_refs:
+        with _StaticServer(BASE_DIR) as static_srv:
+            print(f"Capture des mocks sur http://127.0.0.1:{static_srv.port}/ ...")
+            capture_all(f"http://127.0.0.1:{static_srv.port}", REFERENCE_DIR,
+                        [(m, "/" + m) for m, _ in PAGES])
 
     if args.capture_only:
         print("Captures de référence régénérées. (--capture-only : arrêt ici)")
@@ -320,13 +345,13 @@ def main() -> int:
             diff_img.save(diff_path)
             results.append({"label": label, "pct": pct, "ref": ref,
                             "cur": cur, "diff": diff_path, "note": note})
-            mark = "OK " if pct <= DIFF_THRESHOLD else "DIFF"
+            mark = "OK " if pct <= max(DIFF_THRESHOLD, NOISE_THRESHOLD_PCT) else "DIFF"
             print(f"  {mark} {label:32s} {pct:6.2f} %"
                   + (f"  {note}" if note else ""))
 
     build_report(results)
 
-    n_ko = sum(1 for r in results if r["pct"] > DIFF_THRESHOLD)
+    n_ko = sum(1 for r in results if r["pct"] > max(DIFF_THRESHOLD, NOISE_THRESHOLD_PCT))
     print(f"\nRapport généré : {REPORT_PATH}")
     print(f"{len(results)} comparaisons, {n_ko} en diff.")
     if args.open:
